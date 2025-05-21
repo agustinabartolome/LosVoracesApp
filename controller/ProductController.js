@@ -1,8 +1,8 @@
 const path = require('path');
-const { readJSON, writeJSON } = require('../models/database');
-const Product = require('../models/Product');
+const { readJSON, writeJSON } = require('../model/Database');
+const Product = require('../model/Product');
 
-const filePath = path.join(__dirname, '../data/products.json');
+const filePath = path.join(__dirname, '../data/Product.json');
 
 async function getProducts(req, res) {
     const data = await readJSON(filePath);
