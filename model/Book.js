@@ -1,3 +1,5 @@
+const Product = require('./Product');
+
 class Book extends Product{
 
     constructor(bookId, title, isbn, price, author, publisherHouse, section, stock, literaryGenre){
@@ -14,3 +16,5 @@ class Book extends Product{
     
         }
     }
+
+    module.exports = Book;

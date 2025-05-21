@@ -6,3 +6,5 @@ class Product{
         this.category = category;
     }
 }
+
+module.exports = Product;
