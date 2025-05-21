@@ -1,0 +1,25 @@
+{
+  "name": "los-voraces",
+  "version": "1.0.0",
+  "description": "Pautas y recomendaciones:",
+  "main": "App.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agustinabartolome/LosVoracesApp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/agustinabartolome/LosVoracesApp/issues"
+  },
+  "homepage": "https://github.com/agustinabartolome/LosVoracesApp#readme",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "express": "^5.1.0",
+    "method-override": "^3.0.0",
+    "mongoose": "^8.15.0"
+  }
+}
