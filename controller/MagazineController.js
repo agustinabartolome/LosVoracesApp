@@ -1,0 +1,64 @@
+const path = require('path');
+const { readJSON, writeJSON } = require('../model/Database');
+const Magazine = require('../model/Magazine');
+
+const filePath = path.join(__dirname, '../data/Magazine.json');
+
+async function getMagazines(req, res) {
+    const data = await readJSON(filePath);
+    res.json(data);
+}
+
+async function createMagazine(req, res) {
+    const { name, price, issn, number, section, date, stock, issueNumber } = req.body;
+    const data = await readJSON(filePath);
+
+    const magazineId = Date.now().toString();
+    const newMagazine = new Magazine(magazineId, name, price, issn, number, section, date, stock, issueNumber);
+    data.push(newMagazine);
+
+    if (!name || !issn || !price || !issueNumber) {
+        return res.status(400).json({ error: 'Faltan campos obligatorios' });
+    }
+
+    await writeJSON(filePath, data);
+    res.status(201).json(newBook);
+}
+
+async function updateMagazine(req, res) {
+    const { id } = req.params;
+    const { name, price, issn, number, section, date, stock, issueNumber } = req.body;
+
+    const data = await readJSON(filePath);
+    const index = data.findIndex(p => p.magazineId === id);
+    if (index === -1) return res.status(404).json({ error: 'Revista no encontrada' });
+
+    data[index].name = name;
+    data[index].issn = issn;
+    data[index].price = price;
+    data[index].number = number;
+    data[index].section = section;
+    data[index].stock = stock;
+    data[index].date = date;
+    data[index].issueNumber = issueNumber;
+
+    await writeJSON(filePath, data);
+    res.json(data[index]);
+}
+
+async function deleteMagazine(req, res) {
+    const { id } = req.params;
+    const data = await readJSON(filePath);
+
+    const updated = data.filter(p => p.bookId !== id);
+    await writeJSON(filePath, updated);
+
+    res.json({ mensaje: 'Revista eliminada' });
+}
+
+module.exports = {
+    getMagazines,
+    createMagazine,
+    updateMagazine,
+    deleteMagazine
+};

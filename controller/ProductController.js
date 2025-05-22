@@ -13,6 +13,10 @@ async function createProduct(req, res) {
     const { name, category } = req.body;
     const data = await readJSON(filePath);
 
+    if (!name || !category) {
+    return res.status(400).json({ error: 'Deben completarse todos los campos' });
+}
+
     const productId = Date.now().toString();
     const newProduct = new Product(productId, name, category);
     data.push(newProduct);
