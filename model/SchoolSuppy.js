@@ -1,7 +1,7 @@
 const Product = require('./Product');
 class SchoolSupply extends Product{
 
-    constructor(supplyId, name, price, section, stock, brand, color, description) {
+    constructor(supplyId, name, price, section, stock, brand, description) {
         super(supplyId, name, 'Util Escolar');
         this.supplyId = supplyId;
         this.name = name;
