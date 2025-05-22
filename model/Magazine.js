@@ -9,6 +9,7 @@ class Magazine extends Product{
             this.price = price;
             this.stock = stock;
             this.date = date;
+            this.number = number;
             this.issueNumber = issueNumber;
     
         }
