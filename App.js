@@ -8,7 +8,7 @@ const SchoolSupplyRoute = require('./routes/SchoolSupplyRoute');
 app.use(express.json()); 
 
 // RUTAS 
-app.use('/schoolSupplies', SchoolSupplyRoute);
+app.use('/schoolSupply', SchoolSupplyRoute);
 
 
 app.listen(PORT, () => {
