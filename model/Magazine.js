@@ -1,7 +1,7 @@
 class Magazine extends Product{
 
     constructor(magazineId, name, price, issn, number, section, date, stock, issueNumber){
-    super(productId, name, category);
+    super(magazineId, name, 'Magazine');
             this.magazineId = magazineId;
             this.name = name;      
             this.issn = issn;
@@ -13,4 +13,6 @@ class Magazine extends Product{
             this.issueNumber = issueNumber;
     
         }
-    }
+}
+
+module.exports = Magazine;
