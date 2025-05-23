@@ -56,9 +56,20 @@ async function deleteBook(req, res) {
     res.json({ mensaje: 'Libro eliminado' });
 }
 
+async function renderCatalog(req,res) {
+    try {
+        const books = await readJSON(filePath);
+        res.render('BookCatalog', { books });
+    } catch (err) {
+        console.error('Error al renderizar el catalogo de libros', err);
+        res.status(500).send('Error al cargar el catálogo de libros');
+    }
+}
+
 module.exports = {
     getBooks,
     createBook,
     updateBook,
-    deleteBook
+    deleteBook,
+    renderCatalog
 };
