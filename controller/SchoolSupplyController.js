@@ -58,7 +58,7 @@ async function deleteSchoolSupply(req, res) {
 async function renderCatalog(req, res) {
         try {
             const schoolSupplies = await readJSON(filePath);
-            res.render('schoolSupliesCatalog', { schoolSupplies });
+            res.render('SchoolSupplyCatalog', { schoolSupplies });
         } catch {
             console.error('Error al renderizar el catalogo de libros', err);
             res.status(500).send('Error al cargar el catálogo de libros');

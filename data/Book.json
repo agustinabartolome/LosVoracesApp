@@ -1,41 +1,38 @@
 [
   {
-    "bookId": "1",
-    "title": "Cien años de soledad",
+    "bookId": "1716408900001",
+    "title": "Cien Años de Soledad",
     "isbn": "9780307474728",
-    "price": 3500,
+    "price": 2500,
     "author": "Gabriel García Márquez",
     "publisherHouse": "Editorial Sudamericana",
     "section": "Literatura",
     "stock": 10,
-    "literaryGenre": "Realismo mágico",
-    "name": "Cien años de soledad",
-    "category": "libro"
+    "literaryGenre": "Realismo Mágico",
+    "type": "libro"
   },
   {
-    "bookId": "2",
-    "title": "1984",
-    "isbn": "9780451524935",
-    "price": 4200,
-    "author": "George Orwell",
-    "publisherHouse": "Secker & Warburg",
-    "section": "Ficción",
-    "stock": 5,
-    "literaryGenre": "Distopía",
-    "name": "1984",
-    "category": "libro"
-  },
-  {
-    "bookId": "3",
-    "title": "El principito",
+    "bookId": "1716408900002",
+    "title": "El Principito",
     "isbn": "9780156012195",
-    "price": 2800,
+    "price": 1800,
     "author": "Antoine de Saint-Exupéry",
     "publisherHouse": "Reynal & Hitchcock",
     "section": "Infantil",
     "stock": 15,
     "literaryGenre": "Fábula",
-    "name": "El principito",
-    "category": "libro"
+    "type": "libro"
+  },
+  {
+    "bookId": "1716408900003",
+    "title": "1984",
+    "isbn": "9780451524935",
+    "price": 2200,
+    "author": "George Orwell",
+    "publisherHouse": "Secker & Warburg",
+    "section": "Ficción",
+    "stock": 8,
+    "literaryGenre": "Distopía",
+    "type": "libro"
   }
 ]

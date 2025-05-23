@@ -13,8 +13,8 @@ const SchoolSupplyRoute = require('./routes/SchoolSupplyRoute');
 app.use(express.json()); 
 
 // RUTAS 
-app.use('/books', BookRoutes);
-app.use('/magazines', MagazineRoutes);
+app.use('/book', BookRoutes);
+app.use('/magazine', MagazineRoutes);
 app.use('/schoolSupply', SchoolSupplyRoute);
 
 
