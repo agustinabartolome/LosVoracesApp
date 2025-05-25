@@ -5,16 +5,16 @@ const PORT = process.env.PORT || 3000;
 app.set('view engine', 'pug');
 app.set('views', './views');
 
-const BookRoutes = require('./routes/BookRoutes');
-const MagazineRoutes = require('./routes/MagazineRoutes')
+const BookRoute = require('./routes/BookRoute');
+const MagazineRoute = require('./routes/MagazineRoute')
 const SchoolSupplyRoute = require('./routes/SchoolSupplyRoute');
 
 // Middleware
 app.use(express.json()); 
 
 // RUTAS 
-app.use('/book', BookRoutes);
-app.use('/magazine', MagazineRoutes);
+app.use('/book', BookRoute);
+app.use('/magazine', MagazineRoute);
 app.use('/schoolSupply', SchoolSupplyRoute);
 
 
