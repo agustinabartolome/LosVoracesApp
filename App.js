@@ -6,7 +6,9 @@ const BookRoute = require('./routes/BookRoute');
 const MagazineRoute = require('./routes/MagazineRoute');
 const ProductRoute = require('./routes/ProductRoute');
 const SchoolSupplyRoute = require('./routes/SchoolSupplyRoute');
-
+const OrderRoute = require('./routes/OrderRoute');
+const SaleRoute = require('./routes/SaleRoute');
+const SupplierRoute = require('./routes/SupplierRoute');
 
 // Middleware
 app.use(express.json()); 
@@ -16,6 +18,9 @@ app.use('/book', BookRoute);
 app.use('/magazine', MagazineRoute);
 app.use('/product', ProductRoute);
 app.use('/schoolSupply', SchoolSupplyRoute);
+app.use('/order', OrderRoute);
+app.user('/sale', SaleRoute);
+app.user('/supplier', SupplierRoute)
 
 
 app.listen(PORT, () => {
