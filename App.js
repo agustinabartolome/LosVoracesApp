@@ -22,8 +22,8 @@ app.use('/magazine', MagazineRoute);
 app.use('/product', ProductRoute);
 app.use('/schoolSupply', SchoolSupplyRoute);
 app.use('/order', OrderRoute);
-app.user('/sale', SaleRoute);
-app.user('/supplier', SupplierRoute)
+app.use('/sale', SaleRoute);
+app.use('/supplier', SupplierRoute)
 
 
 app.listen(PORT, () => {

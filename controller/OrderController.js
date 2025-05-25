@@ -27,7 +27,7 @@ async function createOrder(req, res) {
   res.status(201).json(newOrder);
 }
 
-async function updateSale(req, res) {
+async function updateOrder(req, res) {
   const { id } = req.params;
   const { suplierId, product, date, description, category, price, quantityProduct, status, total } = req.body;
 
