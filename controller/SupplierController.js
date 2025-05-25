@@ -55,9 +55,31 @@ async function deleteSupplier(req, res) {
   res.json({ mensaje: 'Proveedor eliminado' });
 }
 
+async function getSuppliersByCategory(req, res) {
+  const { category } = req.params;
+  const data = await readJSON(filePath);
+
+  const filtered = data.filter(s => s.category.toLowerCase() === category.toLowerCase());
+  res.json(filtered);
+}
+
+async function getSupplierById(req, res) {
+  const { id } = req.params;
+  const data = await readJSON(filePath);
+
+  const supplier = data.find(s => s.supplierId === id);
+  if (!supplier) {
+    return res.status(404).json({ error: 'Proveedor no encontrado' });
+  }
+
+  res.json(supplier);
+}
+
 module.exports = {
   getSuppliers,
   createSupplier,
   updateSupplier,
-  deleteSupplier
+  deleteSupplier,
+  getSuppliersByCategory,
+  getSupplierById
 };
