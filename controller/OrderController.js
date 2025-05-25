@@ -18,7 +18,7 @@ async function createOrder(req, res) {
     }
   const data = await readJSON(filePath);
 
-  const id = Date.now().toString();
+  const orderId = Date.now().toString();
   const newOrder = new Order(supplierId, product, date, description, category, price, quantityProduct, status, total);
   data.push(newOrder);
     
@@ -29,7 +29,7 @@ async function createOrder(req, res) {
 
 async function updateOrder(req, res) {
   const { id } = req.params;
-  const { suplierId, product, date, description, category, price, quantityProduct, status, total } = req.body;
+  const { supplierId, product, date, description, category, price, quantityProduct, status, total } = req.body;
 
   const data = await readJSON(filePath);
   const index = data.findIndex(s => s.orderId === id);
