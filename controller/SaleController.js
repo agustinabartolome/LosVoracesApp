@@ -96,10 +96,10 @@ async function getTopSellingProducts(req, res) {
         const productId = sale.product;
         const quantity = sale.quantityProduct;
       
-        if (!productSales[item.productId]) {
-          productSales[item.productId] = 0;
+        if (!productSales[productId]) {
+          productSales[productId] = 0;
         }
-        productSales[item.productId] += item.quantity;
+        productSales[productId] += quantity;
       });
 
   const sortedProducts = Object.entries(productSales)
