@@ -2,6 +2,9 @@ const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.set('view engine', 'pug');
+app.set('views', './views');
+
 const BookRoute = require('./routes/BookRoute');
 const MagazineRoute = require('./routes/MagazineRoute');
 const ProductRoute = require('./routes/ProductRoute');
@@ -19,8 +22,8 @@ app.use('/magazine', MagazineRoute);
 app.use('/product', ProductRoute);
 app.use('/schoolSupply', SchoolSupplyRoute);
 app.use('/order', OrderRoute);
-app.user('/sale', SaleRoute);
-app.user('/supplier', SupplierRoute)
+app.use('/sale', SaleRoute);
+app.use('/supplier', SupplierRoute)
 
 
 app.listen(PORT, () => {

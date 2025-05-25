@@ -55,9 +55,20 @@ async function deleteSchoolSupply(req, res) {
     res.json({ mensaje: 'Util Escolar eliminado' });
 }
 
+async function renderCatalog(req, res) {
+        try {
+            const schoolSupplies = await readJSON(filePath);
+            res.render('SchoolSupplyCatalog', { schoolSupplies });
+        } catch {
+            console.error('Error al renderizar el catalogo de libros', err);
+            res.status(500).send('Error al cargar el catálogo de libros');
+        }
+} 
+
 module.exports = {
     getSchoolSupply,
     createSchoolSupply,
     updateSchoolSupply,
-    deleteSchoolSupply
+    deleteSchoolSupply,
+    renderCatalog,
 };

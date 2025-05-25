@@ -1,3 +1,5 @@
+const Product = require('./Product');
+
 class Magazine extends Product{
 
     constructor(magazineId, name, price, issn, number, section, date, stock, issueNumber){

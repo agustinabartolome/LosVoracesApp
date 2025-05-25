@@ -56,9 +56,20 @@ async function deleteMagazine(req, res) {
     res.json({ mensaje: 'Revista eliminada' });
 }
 
+async function renderCatalog(req, res) {
+        try {
+            const magazines = await readJSON(filePath);
+            res.render('magazineCatalog', { magazines });
+        } catch {
+            console.error('Error al renderizar el catalogo de libros', err);
+            res.status(500).send('Error al cargar el catálogo de libros');
+        }
+}
+
 module.exports = {
     getMagazines,
     createMagazine,
     updateMagazine,
-    deleteMagazine
+    deleteMagazine,
+    renderCatalog
 };
