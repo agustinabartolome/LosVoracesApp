@@ -1,12 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const magazineController = require('../controller/MagazineController');
 
-router.get('/catalog', magazineController.renderCatalog);
+const MagazineController = require('../controller/MagazineController');
 
-router.get('/', magazineController.getMagazines);
-router.post('/', magazineController.createMagazine);
-router.put('/:id', magazineController.updateMagazine);
-router.delete('/:id', magazineController.deleteMagazine);
+
+router.get('/catalog', MagazineController.renderCatalog);
+
+router.get('/', MagazineController.getMagazines);
+router.post('/', MagazineController.createMagazine);
+router.put('/:id', MagazineController.updateMagazine);
+router.delete('/:id', MagazineController.deleteMagazine);
 
 module.exports = router;
