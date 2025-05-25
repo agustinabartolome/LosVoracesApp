@@ -10,7 +10,7 @@ async function getSuppliers(req, res) {
 }
 
 async function createSupplier(req, res) {
-  const { supplierId, name, phoneNumber, email, category, catalog } = req.body;
+  const { name, phoneNumber, email, category, catalog } = req.body;
   
 
   if (!name || !phoneNumber || !email || !category || !catalog) {
@@ -18,7 +18,7 @@ async function createSupplier(req, res) {
     }
   const data = await readJSON(filePath);
 
-  const id = Date.now().toString();
+  const supplierId = Date.now().toString();
   const newSupplier = new Supplier(supplierId, name, phoneNumber, email, category, catalog);
   data.push(newSupplier);
     
