@@ -6,7 +6,7 @@ class Supplier{
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.category = category;
-        this.catalogo = catalog;
+        this.catalog = catalog;
     }
 }
 
