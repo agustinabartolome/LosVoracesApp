@@ -5,24 +5,37 @@ const Book = require('../model/Book');
 const filePath = path.join(__dirname, '../data/Book.json');
 
 async function getBooks(req, res) {
-    const data = await readJSON(filePath);
-    res.json(data);
+    try {
+        const data = await readJSON(filePath);
+        res.json(data);
+    } catch (error) {
+        console.error('getBooks error:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+
 }
 
 async function createBook(req, res) {
-    const { title, isbn, price, author, publisherHouse, section, stock, literaryGenre } = req.body;
-    const data = await readJSON(filePath);
+    try {
+        const { title, isbn, price, author, publisherHouse, section, stock, literaryGenre } = req.body;
 
-    const bookId = Date.now().toString();
-    const newBook = new Book(bookId, title, isbn, price, author, publisherHouse, section, stock, literaryGenre);
-    data.push(newBook);
+        if (!title || !isbn || !price || !author) {
+            return res.status(400).json({ error: 'Faltan campos obligatorios' });
+        }
 
-    if (!title || !isbn || !price || !author) {
-        return res.status(400).json({ error: 'Faltan campos obligatorios' });
+        const data = await readJSON(filePath);
+
+        const bookId = Date.now().toString();
+        const newBook = new Book(bookId, title, isbn, price, author, publisherHouse, section, stock, literaryGenre);
+        data.push(newBook);
+
+
+        await writeJSON(filePath, data);
+        res.status(201).json(newBook);
+    } catch (error) {
+        console.error('createBook error:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
     }
-
-    await writeJSON(filePath, data);
-    res.status(201).json(newBook);
 }
 
 async function updateBook(req, res) {
@@ -53,10 +66,10 @@ async function deleteBook(req, res) {
     const updated = data.filter(p => p.bookId !== id);
     await writeJSON(filePath, updated);
 
-    res.json({ mensaje: 'Libro eliminado' });
+    res.json({ message: 'Libro eliminado' });
 }
 
-async function renderCatalog(req,res) {
+async function renderCatalog(req, res) {
     try {
         const books = await readJSON(filePath);
         res.render('BookCatalog', { books });

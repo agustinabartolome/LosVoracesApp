@@ -5,24 +5,38 @@ const Magazine = require('../model/Magazine');
 const filePath = path.join(__dirname, '../data/Magazine.json');
 
 async function getMagazines(req, res) {
-    const data = await readJSON(filePath);
-    res.json(data);
+    try {
+        const data = await readJSON(filePath);
+        res.json(data);
+    } catch (error) {
+        console.error('getMagazines error:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
 }
 
+
 async function createMagazine(req, res) {
-    const { name, price, issn, number, section, date, stock, issueNumber } = req.body;
-    const data = await readJSON(filePath);
+    try {
+        const { name, price, issn, number, section, date, stock, issueNumber } = req.body;
 
-    const magazineId = Date.now().toString();
-    const newMagazine = new Magazine(magazineId, name, price, issn, number, section, date, stock, issueNumber);
-    data.push(newMagazine);
+        if (!name || !issn || price == null || !issueNumber) {
+            return res.status(400).json({ error: 'Faltan campos obligatorios' });
+        }
 
-    if (!name || !issn || !price || !issueNumber) {
-        return res.status(400).json({ error: 'Faltan campos obligatorios' });
+        const data = await readJSON(filePath);
+
+        const magazineId = Date.now().toString();
+        const newMagazine = new Magazine(magazineId, name, price, issn, number, section, date, stock, issueNumber);
+        data.push(newMagazine);
+
+
+        await writeJSON(filePath, data);
+        res.status(201).json(newMagazine);
+    } catch (error) {
+        console.error('createMagazine error:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+
     }
-
-    await writeJSON(filePath, data);
-    res.status(201).json(newBook);
 }
 
 async function updateMagazine(req, res) {
@@ -53,17 +67,17 @@ async function deleteMagazine(req, res) {
     const updated = data.filter(p => p.bookId !== id);
     await writeJSON(filePath, updated);
 
-    res.json({ mensaje: 'Revista eliminada' });
+    res.json({ message: 'Revista eliminada' });
 }
 
 async function renderCatalog(req, res) {
-        try {
-            const magazines = await readJSON(filePath);
-            res.render('magazineCatalog', { magazines });
-        } catch {
-            console.error('Error al renderizar el catalogo de libros', err);
-            res.status(500).send('Error al cargar el catálogo de libros');
-        }
+    try {
+        const magazines = await readJSON(filePath);
+        res.render('MagazineCatalog', { magazines });
+    } catch (err) {
+        console.error('Error al renderizar el catalogo de revistas', err);
+        res.status(500).send('Error al cargar el catálogo de revistas');
+    }
 }
 
 module.exports = {

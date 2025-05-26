@@ -5,26 +5,39 @@ const Sale = require('../model/Sale');
 const filePath = path.join(__dirname, '../data/Sale.json');
 
 async function getSales(req, res) {
-  const data = await readJSON(filePath);
-  res.json(data);
+  try {
+    const data = await readJSON(filePath);
+    res.json(data);
+  } catch (error) {
+    console.error('getSales error:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+
 }
 
 async function createSale(req, res) {
-  const { saleId, product, date, description, category, price, quantityProduct, total } = req.body;
-  
+  try {
+    const { product, date, description, category, price, quantityProduct, total } = req.body;
 
-  if (!product || !date || !description || !category || !price || !quantityProduct || !total) {
-        return res.status(400).json({ error: 'Faltan campos obligatorios' });
+
+    if (!product || !date || !description || !category || price == null || quantityProduct == null || total == null) {
+      return res.status(400).json({ error: 'Faltan campos obligatorios' });
     }
-  const data = await readJSON(filePath);
+    const data = await readJSON(filePath);
 
-  const id = Date.now().toString();
-  const newSale = new Sale(saleId, product, date, description, category, price, quantityProduct, total);
-  data.push(newSale);
-    
-    
-  await writeJSON(filePath, data);
-  res.status(201).json(newSale);
+    const saleId = Date.now().toString();
+    const newSale = new Sale(saleId, product, date, description, category, price, quantityProduct, total);
+    data.push(newSale);
+
+
+    await writeJSON(filePath, data);
+    res.status(201).json(newSale);
+  } catch (error) {
+    console.error('createSales error:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+
+
 }
 
 async function updateSale(req, res) {
@@ -54,13 +67,15 @@ async function deleteSale(req, res) {
   const updated = data.filter(s => s.saleId !== id);
   await writeJSON(filePath, updated);
 
-  res.json({ mensaje: 'Venta eliminado' });
+  res.json({ message: 'Venta eliminada' });
 }
 
-  function isInRange(dateStr, from, to) {
+function isInRange(dateStr, from, to) {
   const date = new Date(dateStr);
+  if (isNaN(date)) return false;
   return date >= from && date <= to;
 }
+
 
 async function getTopSellingProducts(req, res) {
   const { range = 'week' } = req.query;
@@ -93,14 +108,14 @@ async function getTopSellingProducts(req, res) {
   sales
     .filter(sale => isInRange(sale.date, from, now))
     .forEach(sale => {
-        const productId = sale.product;
-        const quantity = sale.quantityProduct;
-      
-        if (!productSales[item.productId]) {
-          productSales[item.productId] = 0;
-        }
-        productSales[item.productId] += item.quantity;
-      });
+      const productId = sale.product;
+      const quantity = sale.quantityProduct;
+
+      if (!productSales[productId]) {
+        productSales[productId] = 0;
+      }
+      productSales[productId] += quantity;
+    });
 
   const sortedProducts = Object.entries(productSales)
     .sort((a, b) => b[1] - a[1])

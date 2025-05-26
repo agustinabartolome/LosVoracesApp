@@ -1,6 +1,6 @@
 class Order{
 
-    constructor(orderId, supplierId, product, date, description, category, price, quantityProduct, status){
+    constructor(orderId, supplierId, product, date, description, category, price, quantityProduct, status, total){
         this.orderId = orderId;
         this.supplierId = supplierId;
         this.product = product;

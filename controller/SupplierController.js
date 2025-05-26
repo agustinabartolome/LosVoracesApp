@@ -5,26 +5,38 @@ const Supplier = require('../model/Supplier');
 const filePath = path.join(__dirname, '../data/Supplier.json');
 
 async function getSuppliers(req, res) {
-  const data = await readJSON(filePath);
-  res.json(data);
+  try {
+    const data = await readJSON(filePath);
+    res.json(data);
+  } catch (error) {
+    console.error('getSuppliers error:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+
 }
 
 async function createSupplier(req, res) {
-  const { supplierId, name, phoneNumber, email, category, catalog } = req.body;
-  
+  try {
 
-  if (!name || !phoneNumber || !email || !category || !catalog) {
-        return res.status(400).json({ error: 'Faltan campos obligatorios' });
+    const { name, phoneNumber, email, category, catalog } = req.body;
+
+
+    if (!name || !phoneNumber || !email || !category || !catalog) {
+      return res.status(400).json({ error: 'Faltan campos obligatorios' });
     }
-  const data = await readJSON(filePath);
+    const data = await readJSON(filePath);
 
-  const id = Date.now().toString();
-  const newSupplier = new Supplier(supplierId, name, phoneNumber, email, category, catalog);
-  data.push(newSupplier);
-    
-    
-  await writeJSON(filePath, data);
-  res.status(201).json(newSupplier);
+    const supplierId = Date.now().toString();
+    const newSupplier = new Supplier(supplierId, name, phoneNumber, email, category, catalog);
+    data.push(newSupplier);
+
+
+    await writeJSON(filePath, data);
+    res.status(201).json(newSupplier);
+  } catch (error) {
+    console.error('createSupplier error:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
 }
 
 async function updateSupplier(req, res) {
@@ -52,12 +64,34 @@ async function deleteSupplier(req, res) {
   const updated = data.filter(s => s.supplierId !== id);
   await writeJSON(filePath, updated);
 
-  res.json({ mensaje: 'Proveedor eliminado' });
+  res.json({ messaje: 'Proveedor eliminado' });
+}
+
+async function getSuppliersByCategory(req, res) {
+  const { category } = req.params;
+  const data = await readJSON(filePath);
+
+  const filtered = data.filter(s => s.category.toLowerCase() === category.toLowerCase());
+  res.json(filtered);
+}
+
+async function getSupplierById(req, res) {
+  const { id } = req.params;
+  const data = await readJSON(filePath);
+
+  const supplier = data.find(s => s.supplierId === id);
+  if (!supplier) {
+    return res.status(404).json({ error: 'Proveedor no encontrado' });
+  }
+
+  res.json(supplier);
 }
 
 module.exports = {
   getSuppliers,
   createSupplier,
   updateSupplier,
-  deleteSupplier
+  deleteSupplier,
+  getSuppliersByCategory,
+  getSupplierById
 };

@@ -1,28 +1,43 @@
 const path = require('path');
 const { readJSON, writeJSON } = require('../model/Database');
-const  SchoolSupply = require('../model/SchoolSupply');
+const SchoolSupply = require('../model/SchoolSupply');
 
 const filePath = path.join(__dirname, '../data/SchoolSupply.json');
 
 async function getSchoolSupply(req, res) {
-    const data = await readJSON(filePath);
-    res.json(data);
+    try {
+        const data = await readJSON(filePath);
+        res.json(data);
+    } catch (error) {
+        console.error('getSchoolSupply error:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+
 }
 
 async function createSchoolSupply(req, res) {
-    const { name, price, section, stock, brand, description } = req.body;
-    const data = await readJSON(filePath);
+    try {
+        const { name, price, section, stock, brand, description } = req.body;
 
-    const SchoolSupplyId = Date.now().toString();
-    const newSchoolSupply = new SchoolSupply(SchoolSupplyId, name, price, section, stock, brand, description);
-    data.push(newSchoolSupply);
+        if (!name || price == null || !brand) {
+            return res.status(400).json({ error: 'Faltan campos obligatorios' });
+        }
 
-    if (!name || !price || !brand ) {
-        return res.status(400).json({ error: 'Faltan campos obligatorios' });
+
+        const data = await readJSON(filePath);
+
+        const SchoolSupplyId = Date.now().toString();
+        const newSchoolSupply = new SchoolSupply(SchoolSupplyId, name, price, section, stock, brand, description);
+        data.push(newSchoolSupply);
+
+
+        await writeJSON(filePath, data);
+        res.status(201).json(newSchoolSupply);
+
+    } catch (error) {
+        console.error('createSchoolSupply error:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
     }
-
-    await writeJSON(filePath, data);
-    res.status(201).json(newSchoolSupply);
 }
 
 
@@ -52,18 +67,18 @@ async function deleteSchoolSupply(req, res) {
     const updated = data.filter(p => p.SchoolSupplyId !== id);
     await writeJSON(filePath, updated);
 
-    res.json({ mensaje: 'Util Escolar eliminado' });
+    res.json({ message: 'Util Escolar eliminado' });
 }
 
 async function renderCatalog(req, res) {
-        try {
-            const schoolSupplies = await readJSON(filePath);
-            res.render('SchoolSupplyCatalog', { schoolSupplies });
-        } catch {
-            console.error('Error al renderizar el catalogo de libros', err);
-            res.status(500).send('Error al cargar el catálogo de libros');
-        }
-} 
+    try {
+        const schoolSupplies = await readJSON(filePath);
+        res.render('SchoolSupplyCatalog', { schoolSupplies });
+    } catch (err) {
+        console.error('Error al renderizar el catalogo de útiles escolares', err);
+        res.status(500).send('Error al cargar el catálogo de útiles escolares');
+    }
+}
 
 module.exports = {
     getSchoolSupply,
