@@ -5,26 +5,38 @@ const Magazine = require('../model/Magazine');
 const filePath = path.join(__dirname, '../data/Magazine.json');
 
 async function getMagazines(req, res) {
-    const data = await readJSON(filePath);
-    res.json(data);
+    try {
+        const data = await readJSON(filePath);
+        res.json(data);
+    } catch (error) {
+        console.error('getMagazines error:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
 }
 
+
 async function createMagazine(req, res) {
-    const { name, price, issn, number, section, date, stock, issueNumber } = req.body;
+    try {
+        const { name, price, issn, number, section, date, stock, issueNumber } = req.body;
 
-    if (!name || !issn || price == null || !issueNumber) {
-        return res.status(400).json({ error: 'Faltan campos obligatorios' });
+        if (!name || !issn || price == null || !issueNumber) {
+            return res.status(400).json({ error: 'Faltan campos obligatorios' });
+        }
+
+        const data = await readJSON(filePath);
+
+        const magazineId = Date.now().toString();
+        const newMagazine = new Magazine(magazineId, name, price, issn, number, section, date, stock, issueNumber);
+        data.push(newMagazine);
+
+
+        await writeJSON(filePath, data);
+        res.status(201).json(newMagazine);
+    } catch (error) {
+        console.error('createMagazine error:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+
     }
-
-    const data = await readJSON(filePath);
-
-    const magazineId = Date.now().toString();
-    const newMagazine = new Magazine(magazineId, name, price, issn, number, section, date, stock, issueNumber);
-    data.push(newMagazine);
-
-
-    await writeJSON(filePath, data);
-    res.status(201).json(newMagazine);
 }
 
 async function updateMagazine(req, res) {
@@ -58,7 +70,7 @@ async function deleteMagazine(req, res) {
     res.json({ message: 'Revista eliminada' });
 }
 
-async function renderCatalog(req,res) {
+async function renderCatalog(req, res) {
     try {
         const books = await readJSON(filePath);
         res.render('MagazineCatalog', { books });

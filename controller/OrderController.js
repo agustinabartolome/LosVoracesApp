@@ -5,26 +5,37 @@ const Order = require('../model/Order');
 const filePath = path.join(__dirname, '../data/Order.json');
 
 async function getOrders(req, res) {
-  const data = await readJSON(filePath);
-  res.json(data);
+  try {
+    const data = await readJSON(filePath);
+    res.json(data);
+  } catch (error) {
+    console.error('getOrders error:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+
 }
 
 async function createOrder(req, res) {
-  const { product, supplierId, date, description, category, price, quantityProduct, status, total } = req.body;
-  
+  try {
+    const { product, supplierId, date, description, category, price, quantityProduct, status, total } = req.body;
 
-  if (!product || !supplierId || !date || !description || !category || price == null || quantityProduct == null || !status || !total) {
-        return res.status(400).json({ error: 'Faltan campos obligatorios' });
+
+    if (!product || !supplierId || !date || !description || !category || price == null || quantityProduct == null || !status || !total) {
+      return res.status(400).json({ error: 'Faltan campos obligatorios' });
     }
-  const data = await readJSON(filePath);
+    const data = await readJSON(filePath);
 
-  const orderId = Date.now().toString();
-  const newOrder = new Order(orderId, supplierId, product, date, description, category, price, quantityProduct, status, total);
-  data.push(newOrder);
-    
-    
-  await writeJSON(filePath, data);
-  res.status(201).json(newOrder);
+    const orderId = Date.now().toString();
+    const newOrder = new Order(orderId, supplierId, product, date, description, category, price, quantityProduct, status, total);
+    data.push(newOrder);
+
+
+    await writeJSON(filePath, data);
+    res.status(201).json(newOrder);
+  } catch (error) {
+    console.error('createOrder error:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
 }
 
 async function updateOrder(req, res) {
