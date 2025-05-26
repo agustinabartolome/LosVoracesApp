@@ -18,21 +18,7 @@ app.use(express.json());
 
 // Root route
 app.get('/', (req, res) => {
-  res.send(`
-    <h1>bienvenidos a Los Voraces</h1>
-    <h2>Catalogos disponibles:</h2>
-    <ul>
-      <li><a href='/book'>Books</a></li>
-      <li><a href='/magazine'>Magazines</a></li>
-      <li><a href='/schoolSupply'>School Supplies</a></li>
-    </ul>
-    <h2>Gestión:</h2>
-    <ul>
-      <li><a href='/order'>Orders</a></li>
-      <li><a href='/sale'>Sales</a></li>
-      <li><a href='/supplier'>Suppliers</a></li>
-    </ul>
-  `);
+  res.render('home');
 });
 
 // RUTAS 
