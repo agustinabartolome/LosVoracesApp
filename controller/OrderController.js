@@ -13,13 +13,13 @@ async function createOrder(req, res) {
   const { product, supplierId, date, description, category, price, quantityProduct, status, total } = req.body;
   
 
-  if (!product || !supplierId || !date || !description || !category || !price || !quantityProduct || !status || !total) {
+  if (!product || !supplierId || !date || !description || !category || price == null || quantityProduct == null || !status || !total) {
         return res.status(400).json({ error: 'Faltan campos obligatorios' });
     }
   const data = await readJSON(filePath);
 
   const orderId = Date.now().toString();
-  const newOrder = new Order(supplierId, product, date, description, category, price, quantityProduct, status, total);
+  const newOrder = new Order(orderId, supplierId, product, date, description, category, price, quantityProduct, status, total);
   data.push(newOrder);
     
     
@@ -53,10 +53,10 @@ async function deleteOrder(req, res) {
   const { id } = req.params;
   const data = await readJSON(filePath);
 
-  const updated = data.filter(s => s.saleId !== id);
+  const updated = data.filter(s => s.orderId !== id);
   await writeJSON(filePath, updated);
 
-  res.json({ mensaje: 'Orden eliminado' });
+  res.json({ message: 'Orden eliminada' });
 }
 
 module.exports = {

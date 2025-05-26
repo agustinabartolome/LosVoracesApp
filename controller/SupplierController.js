@@ -52,7 +52,7 @@ async function deleteSupplier(req, res) {
   const updated = data.filter(s => s.supplierId !== id);
   await writeJSON(filePath, updated);
 
-  res.json({ mensaje: 'Proveedor eliminado' });
+  res.json({ messaje: 'Proveedor eliminado' });
 }
 
 async function getSuppliersByCategory(req, res) {

@@ -11,18 +11,20 @@ async function getMagazines(req, res) {
 
 async function createMagazine(req, res) {
     const { name, price, issn, number, section, date, stock, issueNumber } = req.body;
+
+    if (!name || !issn || price == null || !issueNumber) {
+        return res.status(400).json({ error: 'Faltan campos obligatorios' });
+    }
+
     const data = await readJSON(filePath);
 
     const magazineId = Date.now().toString();
     const newMagazine = new Magazine(magazineId, name, price, issn, number, section, date, stock, issueNumber);
     data.push(newMagazine);
 
-    if (!name || !issn || !price || !issueNumber) {
-        return res.status(400).json({ error: 'Faltan campos obligatorios' });
-    }
 
     await writeJSON(filePath, data);
-    res.status(201).json(newBook);
+    res.status(201).json(newMagazine);
 }
 
 async function updateMagazine(req, res) {
@@ -53,23 +55,12 @@ async function deleteMagazine(req, res) {
     const updated = data.filter(p => p.bookId !== id);
     await writeJSON(filePath, updated);
 
-    res.json({ mensaje: 'Revista eliminada' });
-}
-
-async function renderCatalog(req, res) {
-        try {
-            const magazines = await readJSON(filePath);
-            res.render('magazineCatalog', { magazines });
-        } catch {
-            console.error('Error al renderizar el catalogo de libros', err);
-            res.status(500).send('Error al cargar el catálogo de libros');
-        }
+    res.json({ message: 'Revista eliminada' });
 }
 
 module.exports = {
     getMagazines,
     createMagazine,
     updateMagazine,
-    deleteMagazine,
-    renderCatalog
+    deleteMagazine
 };

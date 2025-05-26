@@ -11,16 +11,18 @@ async function getBooks(req, res) {
 
 async function createBook(req, res) {
     const { title, isbn, price, author, publisherHouse, section, stock, literaryGenre } = req.body;
+
+    if (!title || !isbn || !price || !author) {
+        return res.status(400).json({ error: 'Faltan campos obligatorios' });
+    }
+
     const data = await readJSON(filePath);
 
     const bookId = Date.now().toString();
     const newBook = new Book(bookId, title, isbn, price, author, publisherHouse, section, stock, literaryGenre);
     data.push(newBook);
 
-    if (!title || !isbn || !price || !author) {
-        return res.status(400).json({ error: 'Faltan campos obligatorios' });
-    }
-
+    
     await writeJSON(filePath, data);
     res.status(201).json(newBook);
 }
@@ -53,7 +55,7 @@ async function deleteBook(req, res) {
     const updated = data.filter(p => p.bookId !== id);
     await writeJSON(filePath, updated);
 
-    res.json({ mensaje: 'Libro eliminado' });
+    res.json({ message: 'Libro eliminado' });
 }
 
 async function renderCatalog(req,res) {

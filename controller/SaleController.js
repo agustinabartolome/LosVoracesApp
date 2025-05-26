@@ -10,15 +10,15 @@ async function getSales(req, res) {
 }
 
 async function createSale(req, res) {
-  const { saleId, product, date, description, category, price, quantityProduct, total } = req.body;
+  const { product, date, description, category, price, quantityProduct, total } = req.body;
   
 
-  if (!product || !date || !description || !category || !price || !quantityProduct || !total) {
+  if (!product || !date || !description || !category || price == null || quantityProduct == null || total == null) {
         return res.status(400).json({ error: 'Faltan campos obligatorios' });
     }
   const data = await readJSON(filePath);
 
-  const id = Date.now().toString();
+  const saleId = Date.now().toString();
   const newSale = new Sale(saleId, product, date, description, category, price, quantityProduct, total);
   data.push(newSale);
     
@@ -54,13 +54,15 @@ async function deleteSale(req, res) {
   const updated = data.filter(s => s.saleId !== id);
   await writeJSON(filePath, updated);
 
-  res.json({ mensaje: 'Venta eliminado' });
+  res.json({ message: 'Venta eliminada' });
 }
 
   function isInRange(dateStr, from, to) {
   const date = new Date(dateStr);
+  if (isNaN(date)) return false;
   return date >= from && date <= to;
 }
+
 
 async function getTopSellingProducts(req, res) {
   const { range = 'week' } = req.query;

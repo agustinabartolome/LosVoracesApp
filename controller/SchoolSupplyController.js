@@ -11,16 +11,19 @@ async function getSchoolSupply(req, res) {
 
 async function createSchoolSupply(req, res) {
     const { name, price, section, stock, brand, description } = req.body;
+
+    if (!name || price == null || !brand ) {
+        return res.status(400).json({ error: 'Faltan campos obligatorios' });
+    }
+
+
     const data = await readJSON(filePath);
 
     const SchoolSupplyId = Date.now().toString();
     const newSchoolSupply = new SchoolSupply(SchoolSupplyId, name, price, section, stock, brand, description);
     data.push(newSchoolSupply);
 
-    if (!name || !price || !brand ) {
-        return res.status(400).json({ error: 'Faltan campos obligatorios' });
-    }
-
+    
     await writeJSON(filePath, data);
     res.status(201).json(newSchoolSupply);
 }
@@ -52,16 +55,16 @@ async function deleteSchoolSupply(req, res) {
     const updated = data.filter(p => p.SchoolSupplyId !== id);
     await writeJSON(filePath, updated);
 
-    res.json({ mensaje: 'Util Escolar eliminado' });
+    res.json({ message: 'Util Escolar eliminado' });
 }
 
 async function renderCatalog(req, res) {
         try {
             const schoolSupplies = await readJSON(filePath);
             res.render('SchoolSupplyCatalog', { schoolSupplies });
-        } catch {
-            console.error('Error al renderizar el catalogo de libros', err);
-            res.status(500).send('Error al cargar el catálogo de libros');
+        } catch (err) {
+            console.error('Error al renderizar el catalogo de útiles escolares', err);
+            res.status(500).send('Error al cargar el catálogo de útiles escolares');
         }
 } 
 
