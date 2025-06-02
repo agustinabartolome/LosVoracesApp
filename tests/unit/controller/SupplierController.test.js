@@ -6,9 +6,11 @@ jest.mock('../../../model/Database');
 jest.mock('../../../model/Supplier');
 
 describe('SupplierController', () => {
+  // Se definen variables simuladas para las peticiones y respuestas HTTP
   let req, res;
 
   beforeEach(() => {
+    // Se inicializan los mocks antes de cada test
     req = { body: {}, params: {}, query: {} };
     res = {
       status: jest.fn().mockReturnThis(),
@@ -19,8 +21,13 @@ describe('SupplierController', () => {
     jest.clearAllMocks();
   });
 
+  // ----------------------
+  // Pruebas de getSuppliers
+  // ----------------------
   describe('getSuppliers', () => {
+    // Test: Debe devolver los proveedores como JSON
     it('should return suppliers as JSON', async () => {
+      // Se simula la respuesta de la base de datos y se verifica que la función responde correctamente
       const suppliers = [{ supplierId: '1' }, { supplierId: '2' }];
       db.readJSON.mockResolvedValue(suppliers);
 
@@ -30,7 +37,9 @@ describe('SupplierController', () => {
       expect(res.json).toHaveBeenCalledWith(suppliers);
     });
 
+    // Test: Debe manejar errores y devolver 500
     it('should handle errors and return 500', async () => {
+      // Se simula un error en la base de datos y se verifica la respuesta de error
       db.readJSON.mockRejectedValue(new Error('fail'));
 
       await SupplierController.getSuppliers(req, res);
@@ -40,8 +49,13 @@ describe('SupplierController', () => {
     });
   });
 
+  // ----------------------
+  // Pruebas de createSupplier
+  // ----------------------
   describe('createSupplier', () => {
+    // Test: Debe crear un proveedor y devolver 201
     it('should create a supplier and return 201', async () => {
+      // Se simulan los datos de entrada y la creación de un proveedor, verificando la respuesta exitosa
       req.body = {
         name: 'Supplier1',
         phoneNumber: '123456789',
@@ -76,7 +90,9 @@ describe('SupplierController', () => {
       Date.now = realDateNow;
     });
 
+    // Test: Debe devolver 400 si faltan campos obligatorios
     it('should return 400 if required fields are missing', async () => {
+      // Se simulan datos incompletos y se verifica la respuesta de error
       req.body = { name: '', phoneNumber: '', email: '', category: '', catalog: '' };
 
       await SupplierController.createSupplier(req, res);
@@ -85,7 +101,9 @@ describe('SupplierController', () => {
       expect(res.json).toHaveBeenCalledWith({ error: 'Faltan campos obligatorios' });
     });
 
+    // Test: Debe manejar errores y devolver 500
     it('should handle errors and return 500', async () => {
+      // Se simula un error en la base de datos y se verifica la respuesta de error
       req.body = {
         name: 'Supplier1',
         phoneNumber: '123456789',
@@ -102,8 +120,13 @@ describe('SupplierController', () => {
     });
   });
 
+  // ----------------------
+  // Pruebas de updateSupplier
+  // ----------------------
   describe('updateSupplier', () => {
+    // Test: Debe actualizar un proveedor y devolverlo
     it('should update a supplier and return it', async () => {
+      // Se simulan los datos de actualización y se verifica la respuesta exitosa
       req.params.id = '1';
       req.body = {
         name: 'Updated',
@@ -123,7 +146,9 @@ describe('SupplierController', () => {
       expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ name: 'Updated' }));
     });
 
+    // Test: Debe devolver 404 si el proveedor no existe
     it('should return 404 if supplier not found', async () => {
+      // Se simula la ausencia del proveedor y se verifica la respuesta de error
       req.params.id = '2';
       req.body = {};
       db.readJSON.mockResolvedValue([{ id: '1' }]);
@@ -135,8 +160,13 @@ describe('SupplierController', () => {
     });
   });
 
+  // ----------------------
+  // Pruebas de deleteSupplier
+  // ----------------------
   describe('deleteSupplier', () => {
+    // Test: Debe eliminar un proveedor y devolver un mensaje
     it('should delete a supplier and return a message', async () => {
+      // Se simula la eliminación de un proveedor y se verifica la respuesta exitosa
       req.params.id = '1';
       const suppliers = [{ supplierId: '1' }, { supplierId: '2' }];
       db.readJSON.mockResolvedValue(suppliers);
@@ -150,8 +180,13 @@ describe('SupplierController', () => {
     });
   });
 
+  // ----------------------
+  // Pruebas de getSuppliersByCategory
+  // ----------------------
   describe('getSuppliersByCategory', () => {
+    // Test: Debe devolver los proveedores filtrados por categoría
     it('should return suppliers filtered by category', async () => {
+      // Se simula la consulta de proveedores por categoría y se verifica la respuesta
       req.params.category = 'books';
       const suppliers = [
         { supplierId: '1', category: 'Books' },
@@ -167,8 +202,13 @@ describe('SupplierController', () => {
     });
   });
 
+  // ----------------------
+  // Pruebas de getSupplierById
+  // ----------------------
   describe('getSupplierById', () => {
+    // Test: Debe devolver un proveedor por id
     it('should return a supplier by id', async () => {
+      // Se simula la consulta de un proveedor por id y se verifica la respuesta
       req.params.id = '1';
       const suppliers = [{ supplierId: '1', name: 'Supplier1' }];
       db.readJSON.mockResolvedValue(suppliers);
@@ -178,7 +218,9 @@ describe('SupplierController', () => {
       expect(res.json).toHaveBeenCalledWith({ supplierId: '1', name: 'Supplier1' });
     });
 
+    // Test: Debe devolver 404 si el proveedor no existe
     it('should return 404 if supplier not found', async () => {
+      // Se simula la ausencia del proveedor y se verifica la respuesta de error
       req.params.id = '3';
       db.readJSON.mockResolvedValue([{ supplierId: '1' }]);
 

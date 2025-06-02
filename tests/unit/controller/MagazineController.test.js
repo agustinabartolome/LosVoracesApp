@@ -1,13 +1,17 @@
+// Tests unitarios para el controlador MagazineController
 const MagazineController = require('../../../controller/MagazineController');
 const Magazine = require('../../../model/Magazine');
 const db = require('../../../model/Database');
 
+// Se mockean las dependencias externas para aislar el controlador
 jest.mock('../../../model/Database');
 jest.mock('../../../model/Magazine');
 
+// Grupo principal de tests para MagazineController
 describe('MagazineController', () => {
   let req, res;
 
+  // Se ejecuta antes de cada test para inicializar los objetos req y res
   beforeEach(() => {
     req = { body: {}, params: {}, query: {} };
     res = {
@@ -19,8 +23,10 @@ describe('MagazineController', () => {
     jest.clearAllMocks();
   });
 
+  // Tests para obtener revistas
   describe('getMagazines', () => {
     it('should return magazines as JSON', async () => {
+      // Verifica que se devuelvan las revistas correctamente en formato JSON
       const magazines = [{ name: 'Magazine1' }, { name: 'Magazine2' }];
       db.readJSON.mockResolvedValue(magazines);
 
@@ -31,6 +37,7 @@ describe('MagazineController', () => {
     });
 
     it('should handle errors and return 500', async () => {
+      // Verifica el manejo de errores y el status 500
       db.readJSON.mockRejectedValue(new Error('fail'));
 
       await MagazineController.getMagazines(req, res);
@@ -40,8 +47,10 @@ describe('MagazineController', () => {
     });
   });
 
+  // Tests para crear una revista
   describe('createMagazine', () => {
     it('should create a magazine and return 201', async () => {
+      // Verifica la creación exitosa de una revista
       req.body = {
         name: 'Test Magazine',
         price: 10,
@@ -83,6 +92,7 @@ describe('MagazineController', () => {
     });
 
     it('should return 400 if required fields are missing', async () => {
+      // Verifica que se retorne 400 si faltan campos obligatorios
       req.body = { name: '', issn: '', price: null, issueNumber: null };
 
       await MagazineController.createMagazine(req, res);
@@ -92,6 +102,7 @@ describe('MagazineController', () => {
     });
 
     it('should handle errors and return 500', async () => {
+      // Verifica el manejo de errores inesperados
       req.body = {
         name: 'Test Magazine',
         price: 10,
@@ -111,8 +122,10 @@ describe('MagazineController', () => {
     });
   });
 
+  // Tests para actualizar una revista
   describe('updateMagazine', () => {
     it('should update a magazine and return it', async () => {
+      // Verifica la actualización exitosa de una revista
       req.params.id = '1';
       req.body = {
         name: 'Updated',
@@ -136,6 +149,7 @@ describe('MagazineController', () => {
     });
 
     it('should return 404 if magazine not found', async () => {
+      // Verifica que se retorne 404 si la revista no existe
       req.params.id = '2';
       req.body = {};
       db.readJSON.mockResolvedValue([{ magazineId: '1' }]);
@@ -147,8 +161,10 @@ describe('MagazineController', () => {
     });
   });
 
+  // Tests para eliminar una revista
   describe('deleteMagazine', () => {
     it('should delete a magazine and return a message', async () => {
+      // Verifica la eliminación exitosa de una revista
       req.params.id = '1';
       const magazines = [{ bookId: '1' }, { bookId: '2' }];
       db.readJSON.mockResolvedValue(magazines);
@@ -162,8 +178,10 @@ describe('MagazineController', () => {
     });
   });
 
+  // Tests para renderizar el catálogo
   describe('renderCatalog', () => {
     it('should render the catalog with magazines', async () => {
+      // Verifica que se renderice el catálogo correctamente
       const magazines = [{ name: 'Magazine1' }];
       db.readJSON.mockResolvedValue(magazines);
 
@@ -173,6 +191,7 @@ describe('MagazineController', () => {
     });
 
     it('should handle errors and return 500', async () => {
+      // Verifica el manejo de errores al renderizar el catálogo
       db.readJSON.mockRejectedValue(new Error('fail'));
 
       await MagazineController.renderCatalog(req, res);
