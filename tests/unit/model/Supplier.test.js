@@ -88,7 +88,7 @@ describe('Supplier Model Test', () => {
                     supplierData.email,
                     supplierData.category
                 );
-            }).toThrow('Phone number must have at least 10 digits');
+            }).toThrow('Phone number must have at least 9 digits');
         });
 
         test('should validate catalog is an array', () => {

@@ -28,9 +28,13 @@ app.use('/magazine', MagazineRoute);
 app.use('/schoolSupply', SchoolSupplyRoute);
 app.use('/order', OrderRoute);
 app.use('/sale', SaleRoute);
-app.use('/supplier', SupplierRoute)
+app.use('/supplier', SupplierRoute);
 
+// Only start the server if this file is run directly
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Servidor en http://localhost:${PORT}`);
+  });
+}
 
-app.listen(PORT, () => {
-  console.log(`Servidor en http://localhost:${PORT}`);
-});
+module.exports = app;
