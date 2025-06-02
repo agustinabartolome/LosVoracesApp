@@ -78,50 +78,55 @@ function isInRange(dateStr, from, to) {
 
 
 async function getTopSellingProducts(req, res) {
-  const { range = 'week' } = req.query;
+  try {
+    const { range = 'week' } = req.query;
 
-  const now = new Date();
-  let from;
+    const now = new Date();
+    let from;
 
-  switch (range) {
-    case 'month':
-      from = new Date(now.getFullYear(), now.getMonth(), 1);
-      break;
-    case 'quarter':
-      from = new Date(now.getFullYear(), now.getMonth() - 2, 1);
-      break;
-    case 'sixmonths':
-      from = new Date(now.getFullYear(), now.getMonth() - 5, 1);
-      break;
-    case 'year':
-      from = new Date(now.getFullYear(), 0, 1);
-      break;
-    case 'week':
-    default:
-      from = new Date(now);
-      from.setDate(now.getDate() - 7);
+    switch (range) {
+      case 'month':
+        from = new Date(now.getFullYear(), now.getMonth(), 1);
+        break;
+      case 'quarter':
+        from = new Date(now.getFullYear(), now.getMonth() - 2, 1);
+        break;
+      case 'sixmonths':
+        from = new Date(now.getFullYear(), now.getMonth() - 5, 1);
+        break;
+      case 'year':
+        from = new Date(now.getFullYear(), 0, 1);
+        break;
+      case 'week':
+      default:
+        from = new Date(now);
+        from.setDate(now.getDate() - 7);
+    }
+
+    const sales = await readJSON(filePath);
+    const productSales = {};
+
+    sales
+      .filter(sale => isInRange(sale.date, from, now))
+      .forEach(sale => {
+        const productId = sale.product;
+        const quantity = sale.quantityProduct;
+
+        if (!productSales[productId]) {
+          productSales[productId] = 0;
+        }
+        productSales[productId] += quantity;
+      });
+
+    const sortedProducts = Object.entries(productSales)
+      .sort((a, b) => b[1] - a[1])
+      .map(([productId, quantity]) => ({ productId, quantity }));
+
+    res.json(sortedProducts);
+  } catch (error) {
+    console.error('getTopSellingProducts error:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
   }
-
-  const sales = await readJSON(filePath);
-  const productSales = {};
-
-  sales
-    .filter(sale => isInRange(sale.date, from, now))
-    .forEach(sale => {
-      const productId = sale.product;
-      const quantity = sale.quantityProduct;
-
-      if (!productSales[productId]) {
-        productSales[productId] = 0;
-      }
-      productSales[productId] += quantity;
-    });
-
-  const sortedProducts = Object.entries(productSales)
-    .sort((a, b) => b[1] - a[1])
-    .map(([productId, quantity]) => ({ productId, quantity }));
-
-  res.json(sortedProducts);
 }
 
 

@@ -63,6 +63,21 @@ class Book extends Product {
         const { updateStock } = require('./helpers/stockHelper');
         this.#stock = updateStock(this.#stock, quantity);
     }
+
+    toJSON() {
+        return {
+            bookId: this.productId, // from Product
+            title: this.name, // from Product
+            category: this.category, // from Product
+            isbn: this.#isbn,
+            price: this.#price,
+            author: this.#author,
+            publisherHouse: this.#publisherHouse,
+            section: this.#section,
+            stock: this.#stock,
+            literaryGenre: this.#literaryGenre
+        };
+    }
 }
 
 module.exports = Book;
