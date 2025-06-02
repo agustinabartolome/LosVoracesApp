@@ -15,10 +15,28 @@ Cada archivo de test sigue la convención `<Nombre>.test.js` y utiliza Jest como
 
 ## Ejecución
 
-Para ejecutar todos los tests, usa el siguiente comando en la raíz del proyecto:
+Para ejecutar todos los tests, usar el siguiente comando en la raíz del proyecto:
 
 ```powershell
 npm test
+```
+
+Para ejecutar un test específico (por ejemplo, solo el de BookController), se utiliza:
+
+```powershell
+npx jest tests/unit/controller/BookController.test.js
+```
+
+También podes filtrar por nombre de archivo o por nombre de test usando la opción `-t`:
+
+```powershell
+npx jest -t "nombre del test o describe"
+```
+
+Para ejecutar todos los tests de una suite (por ejemplo, todos los de modelos):
+
+```powershell
+npx jest tests/unit/model
 ```
 
 Para ejecutar los tests en modo observador (útil durante el desarrollo):
