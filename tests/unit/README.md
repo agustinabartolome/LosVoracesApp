@@ -21,6 +21,24 @@ Para ejecutar todos los tests, usa el siguiente comando en la raíz del proyecto
 npm test
 ```
 
+Para ejecutar un test específico (por ejemplo, solo el de BookController), utiliza:
+
+```powershell
+npx jest tests/unit/controller/BookController.test.js
+```
+
+También puedes filtrar por nombre de archivo o por nombre de test usando la opción `-t`:
+
+```powershell
+npx jest -t "nombre del test o describe"
+```
+
+Para ejecutar todos los tests de una suite (por ejemplo, todos los de modelos):
+
+```powershell
+npx jest tests/unit/model
+```
+
 Para ejecutar los tests en modo observador (útil durante el desarrollo):
 
 ```powershell
