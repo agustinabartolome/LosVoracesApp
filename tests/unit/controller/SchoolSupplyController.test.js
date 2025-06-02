@@ -6,9 +6,11 @@ jest.mock('../../../model/Database');
 jest.mock('../../../model/SchoolSupply');
 
 describe('SchoolSupplyController', () => {
+  // Se definen variables simuladas para las peticiones y respuestas HTTP
   let req, res;
 
   beforeEach(() => {
+    // Se inicializan los mocks antes de cada test
     req = { body: {}, params: {}, query: {} };
     res = {
       status: jest.fn().mockReturnThis(),
@@ -19,8 +21,13 @@ describe('SchoolSupplyController', () => {
     jest.clearAllMocks();
   });
 
+  // ----------------------
+  // Pruebas de getSchoolSupply
+  // ----------------------
   describe('getSchoolSupply', () => {
+    // Test: Debe devolver los útiles escolares como JSON
     it('should return school supplies as JSON', async () => {
+      // Se simula la respuesta de la base de datos y se verifica que la función responde correctamente
       const supplies = [{ SchoolSupplyId: '1' }, { SchoolSupplyId: '2' }];
       db.readJSON.mockResolvedValue(supplies);
 
@@ -30,7 +37,9 @@ describe('SchoolSupplyController', () => {
       expect(res.json).toHaveBeenCalledWith(supplies);
     });
 
+    // Test: Debe manejar errores y devolver 500
     it('should handle errors and return 500', async () => {
+      // Se simula un error en la base de datos y se verifica la respuesta de error
       db.readJSON.mockRejectedValue(new Error('fail'));
 
       await SchoolSupplyController.getSchoolSupply(req, res);
@@ -40,8 +49,13 @@ describe('SchoolSupplyController', () => {
     });
   });
 
+  // ----------------------
+  // Pruebas de createSchoolSupply
+  // ----------------------
   describe('createSchoolSupply', () => {
+    // Test: Debe crear un útil escolar y devolver 201
     it('should create a school supply and return 201', async () => {
+      // Se simulan los datos de entrada y la creación de un útil escolar, verificando la respuesta exitosa
       req.body = {
         name: 'Pencil',
         price: 1,
@@ -78,7 +92,9 @@ describe('SchoolSupplyController', () => {
       Date.now = realDateNow;
     });
 
+    // Test: Debe devolver 400 si faltan campos obligatorios
     it('should return 400 if required fields are missing', async () => {
+      // Se simulan datos incompletos y se verifica la respuesta de error
       req.body = { name: '', price: null, brand: '' };
 
       await SchoolSupplyController.createSchoolSupply(req, res);
@@ -87,7 +103,9 @@ describe('SchoolSupplyController', () => {
       expect(res.json).toHaveBeenCalledWith({ error: 'Faltan campos obligatorios' });
     });
 
+    // Test: Debe manejar errores y devolver 500
     it('should handle errors and return 500', async () => {
+      // Se simula un error en la base de datos y se verifica la respuesta de error
       req.body = {
         name: 'Pencil',
         price: 1,
@@ -105,8 +123,13 @@ describe('SchoolSupplyController', () => {
     });
   });
 
+  // ----------------------
+  // Pruebas de updateSchoolSupply
+  // ----------------------
   describe('updateSchoolSupply', () => {
+    // Test: Debe actualizar un útil escolar y devolverlo
     it('should update a school supply and return it', async () => {
+      // Se simulan los datos de actualización y se verifica la respuesta exitosa
       req.params.id = '1';
       req.body = {
         name: 'Pen',
@@ -127,7 +150,9 @@ describe('SchoolSupplyController', () => {
       expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ name: 'Pen' }));
     });
 
+    // Test: Debe devolver 404 si el útil escolar no existe
     it('should return 404 if school supply not found', async () => {
+      // Se simula la ausencia del útil escolar y se verifica la respuesta de error
       req.params.id = '2';
       req.body = {};
       db.readJSON.mockResolvedValue([{ SchoolSupplyId: '1' }]);
@@ -139,8 +164,13 @@ describe('SchoolSupplyController', () => {
     });
   });
 
+  // ----------------------
+  // Pruebas de deleteSchoolSupply
+  // ----------------------
   describe('deleteSchoolSupply', () => {
+    // Test: Debe eliminar un útil escolar y devolver un mensaje
     it('should delete a school supply and return a message', async () => {
+      // Se simula la eliminación de un útil escolar y se verifica la respuesta exitosa
       req.params.id = '1';
       const supplies = [{ SchoolSupplyId: '1' }, { SchoolSupplyId: '2' }];
       db.readJSON.mockResolvedValue(supplies);
@@ -154,8 +184,13 @@ describe('SchoolSupplyController', () => {
     });
   });
 
+  // ----------------------
+  // Pruebas de renderCatalog
+  // ----------------------
   describe('renderCatalog', () => {
+    // Test: Debe renderizar el catálogo con los útiles escolares
     it('should render the catalog with school supplies', async () => {
+      // Se simula la consulta de útiles escolares y se verifica el renderizado
       const supplies = [{ name: 'Pencil' }];
       db.readJSON.mockResolvedValue(supplies);
 
@@ -164,7 +199,9 @@ describe('SchoolSupplyController', () => {
       expect(res.render).toHaveBeenCalledWith('SchoolSupplyCatalog', { schoolSupplies: supplies });
     });
 
+    // Test: Debe manejar errores y devolver 500
     it('should handle errors and return 500', async () => {
+      // Se simula un error en la base de datos y se verifica la respuesta de error
       db.readJSON.mockRejectedValue(new Error('fail'));
 
       await SchoolSupplyController.renderCatalog(req, res);

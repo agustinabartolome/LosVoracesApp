@@ -1,13 +1,17 @@
+// Tests unitarios para el controlador BookController
 const BookController = require('../../../controller/BookController');
 const Book = require('../../../model/Book');
 const db = require('../../../model/Database');
 
+// Se mockean las dependencias externas para aislar el controlador
 jest.mock('../../../model/Database');
 jest.mock('../../../model/Book');
 
+// Grupo principal de tests para BookController
 describe('BookController', () => {
   let req, res;
 
+  // Se ejecuta antes de cada test para inicializar los objetos req y res
   beforeEach(() => {
     req = { body: {}, params: {}, query: {} };
     res = {
@@ -19,8 +23,10 @@ describe('BookController', () => {
     jest.clearAllMocks();
   });
 
+  // Tests para obtener libros
   describe('getBooks', () => {
     it('should return books as JSON', async () => {
+      // Verifica que se devuelvan los libros correctamente en formato JSON
       const books = [{ title: 'Book1' }, { title: 'Book2' }];
       db.readJSON.mockResolvedValue(books);
 
@@ -31,6 +37,7 @@ describe('BookController', () => {
     });
 
     it('should handle errors and return 500', async () => {
+      // Verifica el manejo de errores y el status 500
       db.readJSON.mockRejectedValue(new Error('fail'));
 
       await BookController.getBooks(req, res);
@@ -40,8 +47,10 @@ describe('BookController', () => {
     });
   });
 
+  // Tests para crear un libro
   describe('createBook', () => {
     it('should create a book and return 201', async () => {
+      // Verifica la creación exitosa de un libro
       req.body = {
         title: 'Test Book',
         isbn: '123',
@@ -59,7 +68,7 @@ describe('BookController', () => {
 
       db.writeJSON.mockResolvedValue();
 
-      // Mock Date.now
+      // Mock Date.now para control de ID
       const realDateNow = Date.now;
       Date.now = jest.fn(() => 1);
 
@@ -85,6 +94,7 @@ describe('BookController', () => {
     });
 
     it('should return 400 if required fields are missing', async () => {
+      // Verifica que se retorne 400 si faltan campos obligatorios
       req.body = { title: '', isbn: '', price: '', author: '' };
 
       await BookController.createBook(req, res);
@@ -94,6 +104,7 @@ describe('BookController', () => {
     });
 
     it('should handle errors and return 500', async () => {
+      // Verifica el manejo de errores inesperados
       req.body = {
         title: 'Test Book',
         isbn: '123',
@@ -113,8 +124,10 @@ describe('BookController', () => {
     });
   });
 
+  // Tests para actualizar un libro
   describe('updateBook', () => {
     it('should update a book and return it', async () => {
+      // Verifica la actualización exitosa de un libro
       req.params.id = '1';
       req.body = {
         title: 'Updated',
@@ -138,6 +151,7 @@ describe('BookController', () => {
     });
 
     it('should return 404 if book not found', async () => {
+      // Verifica que se retorne 404 si el libro no existe
       req.params.id = '2';
       req.body = {};
       db.readJSON.mockResolvedValue([{ bookId: '1' }]);
@@ -149,8 +163,10 @@ describe('BookController', () => {
     });
   });
 
+  // Tests para eliminar un libro
   describe('deleteBook', () => {
     it('should delete a book and return a message', async () => {
+      // Verifica la eliminación exitosa de un libro
       req.params.id = '1';
       const books = [{ bookId: '1' }, { bookId: '2' }];
       db.readJSON.mockResolvedValue(books);
@@ -164,8 +180,10 @@ describe('BookController', () => {
     });
   });
 
+  // Tests para renderizar el catálogo
   describe('renderCatalog', () => {
     it('should render the catalog with books', async () => {
+      // Verifica que se renderice el catálogo correctamente
       const books = [{ title: 'Book1' }];
       db.readJSON.mockResolvedValue(books);
 
@@ -175,6 +193,7 @@ describe('BookController', () => {
     });
 
     it('should handle errors and return 500', async () => {
+      // Verifica el manejo de errores al renderizar el catálogo
       db.readJSON.mockRejectedValue(new Error('fail'));
 
       await BookController.renderCatalog(req, res);

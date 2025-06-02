@@ -1,13 +1,17 @@
+// Tests unitarios para el controlador OrderController
 const OrderController = require('../../../controller/OrderController');
 const Order = require('../../../model/Order');
 const db = require('../../../model/Database');
 
+// Se mockean las dependencias externas para aislar el controlador
 jest.mock('../../../model/Database');
 jest.mock('../../../model/Order');
 
+// Grupo principal de tests para OrderController
 describe('OrderController', () => {
   let req, res;
 
+  // Se ejecuta antes de cada test para inicializar los objetos req y res
   beforeEach(() => {
     req = { body: {}, params: {}, query: {} };
     res = {
@@ -19,8 +23,10 @@ describe('OrderController', () => {
     jest.clearAllMocks();
   });
 
+  // Tests para obtener órdenes
   describe('getOrders', () => {
     it('should return orders as JSON', async () => {
+      // Verifica que se devuelvan las órdenes correctamente en formato JSON
       const orders = [{ orderId: '1' }, { orderId: '2' }];
       db.readJSON.mockResolvedValue(orders);
 
@@ -31,6 +37,7 @@ describe('OrderController', () => {
     });
 
     it('should handle errors and return 500', async () => {
+      // Verifica el manejo de errores y el status 500
       db.readJSON.mockRejectedValue(new Error('fail'));
 
       await OrderController.getOrders(req, res);
@@ -40,8 +47,10 @@ describe('OrderController', () => {
     });
   });
 
+  // Tests para crear una orden
   describe('createOrder', () => {
     it('should create an order and return 201', async () => {
+      // Verifica la creación exitosa de una orden
       req.body = {
         product: { id: 'p1' },
         supplierId: 's1',
@@ -85,6 +94,7 @@ describe('OrderController', () => {
     });
 
     it('should return 400 if required fields are missing', async () => {
+      // Verifica que se retorne 400 si faltan campos obligatorios
       req.body = { product: null, supplierId: '', date: '', description: '', category: '', price: null, quantityProduct: null, status: '', total: '' };
 
       await OrderController.createOrder(req, res);
@@ -94,6 +104,7 @@ describe('OrderController', () => {
     });
 
     it('should handle errors and return 500', async () => {
+      // Verifica el manejo de errores inesperados
       req.body = {
         product: { id: 'p1' },
         supplierId: 's1',
@@ -114,8 +125,10 @@ describe('OrderController', () => {
     });
   });
 
+  // Tests para actualizar una orden
   describe('updateOrder', () => {
     it('should update an order and return it', async () => {
+      // Verifica la actualización exitosa de una orden
       req.params.id = '1';
       req.body = {
         product: { id: 'p1' },
@@ -140,6 +153,7 @@ describe('OrderController', () => {
     });
 
     it('should return 404 if order not found', async () => {
+      // Verifica que se retorne 404 si la orden no existe
       req.params.id = '2';
       req.body = {};
       db.readJSON.mockResolvedValue([{ orderId: '1' }]);
@@ -151,8 +165,10 @@ describe('OrderController', () => {
     });
   });
 
+  // Tests para eliminar una orden
   describe('deleteOrder', () => {
     it('should delete an order and return a message', async () => {
+      // Verifica la eliminación exitosa de una orden
       req.params.id = '1';
       const orders = [{ orderId: '1' }, { orderId: '2' }];
       db.readJSON.mockResolvedValue(orders);

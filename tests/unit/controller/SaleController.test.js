@@ -6,9 +6,11 @@ jest.mock('../../../model/Database');
 jest.mock('../../../model/Sale');
 
 describe('SaleController', () => {
+  // Se definen variables simuladas para las peticiones y respuestas HTTP
   let req, res;
 
   beforeEach(() => {
+    // Se inicializan los mocks antes de cada test
     req = { body: {}, params: {}, query: {} };
     res = {
       status: jest.fn().mockReturnThis(),
@@ -19,8 +21,13 @@ describe('SaleController', () => {
     jest.clearAllMocks();
   });
 
+  // ----------------------
+  // Pruebas de getSales
+  // ----------------------
   describe('getSales', () => {
+    // Test: Debe devolver las ventas como JSON
     it('should return sales as JSON', async () => {
+      // Se simula la respuesta de la base de datos y se verifica que la función responde correctamente
       const sales = [{ saleId: '1' }, { saleId: '2' }];
       db.readJSON.mockResolvedValue(sales);
 
@@ -30,7 +37,9 @@ describe('SaleController', () => {
       expect(res.json).toHaveBeenCalledWith(sales);
     });
 
+    // Test: Debe manejar errores y devolver 500
     it('should handle errors and return 500', async () => {
+      // Se simula un error en la base de datos y se verifica la respuesta de error
       db.readJSON.mockRejectedValue(new Error('fail'));
 
       await SaleController.getSales(req, res);
@@ -40,8 +49,13 @@ describe('SaleController', () => {
     });
   });
 
+  // ----------------------
+  // Pruebas de createSale
+  // ----------------------
   describe('createSale', () => {
+    // Test: Debe crear una venta y devolver 201
     it('should create a sale and return 201', async () => {
+      // Se simulan los datos de entrada y la creación de una venta, verificando la respuesta exitosa
       req.body = {
         product: 'p1',
         date: '2024-01-01',
@@ -80,7 +94,9 @@ describe('SaleController', () => {
       Date.now = realDateNow;
     });
 
+    // Test: Debe devolver 400 si faltan campos obligatorios
     it('should return 400 if required fields are missing', async () => {
+      // Se simulan datos incompletos y se verifica la respuesta de error
       req.body = { product: '', date: '', description: '', category: '', price: null, quantityProduct: null, total: null };
 
       await SaleController.createSale(req, res);
@@ -89,7 +105,9 @@ describe('SaleController', () => {
       expect(res.json).toHaveBeenCalledWith({ error: 'Faltan campos obligatorios' });
     });
 
+    // Test: Debe manejar errores y devolver 500
     it('should handle errors and return 500', async () => {
+      // Se simula un error en la base de datos y se verifica la respuesta de error
       req.body = {
         product: 'p1',
         date: '2024-01-01',
@@ -108,8 +126,13 @@ describe('SaleController', () => {
     });
   });
 
+  // ----------------------
+  // Pruebas de updateSale
+  // ----------------------
   describe('updateSale', () => {
+    // Test: Debe actualizar una venta y devolverla
     it('should update a sale and return it', async () => {
+      // Se simulan los datos de actualización y se verifica la respuesta exitosa
       req.params.id = '1';
       req.body = {
         product: 'p1',
@@ -131,7 +154,9 @@ describe('SaleController', () => {
       expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ description: 'desc' }));
     });
 
+    // Test: Debe devolver 404 si la venta no existe
     it('should return 404 if sale not found', async () => {
+      // Se simula la ausencia de la venta y se verifica la respuesta de error
       req.params.id = '2';
       req.body = {};
       db.readJSON.mockResolvedValue([{ saleId: '1' }]);
@@ -143,8 +168,13 @@ describe('SaleController', () => {
     });
   });
 
+  // ----------------------
+  // Pruebas de deleteSale
+  // ----------------------
   describe('deleteSale', () => {
+    // Test: Debe eliminar una venta y devolver un mensaje
     it('should delete a sale and return a message', async () => {
+      // Se simula la eliminación de una venta y se verifica la respuesta exitosa
       req.params.id = '1';
       const sales = [{ saleId: '1' }, { saleId: '2' }];
       db.readJSON.mockResolvedValue(sales);
@@ -158,8 +188,13 @@ describe('SaleController', () => {
     });
   });
 
+  // ----------------------
+  // Pruebas de getTopSellingProducts
+  // ----------------------
   describe('getTopSellingProducts', () => {
+    // Test: Debe devolver los productos más vendidos de la semana por defecto
     it('should return top selling products for the week by default', async () => {
+      // Se simula la consulta de ventas y se verifica el cálculo de productos más vendidos
       const now = new Date('2024-06-01');
       jest.spyOn(global, 'Date').mockImplementation(() => now);
 
@@ -184,7 +219,9 @@ describe('SaleController', () => {
       global.Date.mockRestore();
     });
 
+    // Test: Debe devolver productos aunque no haya ventas en el rango
     it('should return products even if no sales in range', async () => {
+      // Se simula la ausencia de ventas en el rango y se verifica la respuesta
       const now = new Date('2024-06-01');
       jest.spyOn(global, 'Date').mockImplementation(() => now);
 
@@ -202,7 +239,9 @@ describe('SaleController', () => {
       global.Date.mockRestore();
     });
 
+    // Test: Debe manejar errores y devolver 500
     it('should handle errors and return 500', async () => {
+      // Se simula un error en la base de datos y se verifica la respuesta de error
       db.readJSON.mockRejectedValue(new Error('fail'));
       await SaleController.getTopSellingProducts(req, res);
       expect(res.status).toHaveBeenCalledWith(500);
