@@ -64,7 +64,7 @@ async function deleteMagazine(req, res) {
     const { id } = req.params;
     const data = await readJSON(filePath);
 
-    const updated = data.filter(p => p.bookId !== id);
+    const updated = data.filter(p => p.magazineId !== id);
     await writeJSON(filePath, updated);
 
     res.json({ message: 'Revista eliminada' });
