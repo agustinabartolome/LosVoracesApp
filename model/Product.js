@@ -1,4 +1,4 @@
-class Product {
+/*class Product {
     #productId;
     #name;
     #category;
@@ -26,4 +26,14 @@ class Product {
     }
 }
 
-module.exports = Product;
+module.exports = Product;*/
+
+const mongoose = require('mongoose');
+
+const ProductSchema = new mongoose.Schema({
+  productId: { type: String, required: true, unique: true },  
+  name: { type: String, required: true },
+  category: { type: String, required: true}
+});
+
+module.exports = mongoose.model('Product', productSchema);

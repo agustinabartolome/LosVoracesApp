@@ -1,6 +1,13 @@
 const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
+const dotenv = require('dotenv');
+dotenv.config();
+const mongoose = require('mongoose');
+
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log('Conectado a MongoDB'))  
+  .catch(err => console.error(err));        
 
 app.set('view engine', 'pug');
 app.set('views', './views');

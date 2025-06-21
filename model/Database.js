@@ -1,4 +1,4 @@
-const { read } = require('fs');
+/*const { read } = require('fs');
 
 const fs = require('fs').promises;
 
@@ -14,4 +14,5 @@ async function writeJSON(filePath, data) {
 module.exports = {
     readJSON,
     writeJSON,
-};
+};*/
+
