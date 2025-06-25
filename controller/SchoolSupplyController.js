@@ -1,4 +1,4 @@
-const path = require('path');
+/*const path = require('path');
 const { readJSON, writeJSON } = require('../model/Database');
 const SchoolSupply = require('../model/SchoolSupply');
 
@@ -86,4 +86,105 @@ module.exports = {
     updateSchoolSupply,
     deleteSchoolSupply,
     renderCatalog,
+};*/
+
+const SchoolSupply = require("../model/SchoolSupply.js");
+
+async function getSchoolSupply(req, res) {
+  try {
+    const schoolSupply = await Schoolsupply.find();
+    res.json(schoolSupply);
+  } catch (error) {
+    console.error("getSchoolSupply error:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+}
+
+async function createSchoolSupply(req, res) {
+  try {
+    const { name, price, section, stock, brand, description } = req.body;
+
+    if (!name || price == null || !brand) {
+      return res.status(400).json({ error: "Faltan campos obligatorios" });
+    }
+
+    const schoolSupplyId = Date.now().toString();
+    const newSchoolSupply = new SchoolSupply({
+      schoolSupplyId,
+      name,
+      price,
+      section,
+      stock,
+      brand,
+      description,
+    });
+
+    await newSchoolSupply.save();
+    res.status(201).json(newSchoolSupply);
+  } catch (error) {
+    console.error("createSchoolSupply error:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+}
+
+async function updateSchoolSupply(req, res) {
+  const { id } = req.params;
+  const { name, price, section, stock, brand, description } = req.body;
+
+  try {
+    const schoolSupply = await SchoolSupply.findOne({ schoolSupplyId: id });
+
+    if (!schoolSupply)
+      return res.status(404).json({ error: "Util Escolar no encontrado" });
+
+    schoolSupply.name = name;
+    schoolSupply.price = price;
+    schoolSupply.section = section;
+    schoolSupply.stock = stock;
+    schoolSupply.brand = brand;
+    schoolSupply.description = description;
+
+    await schoolSupply.save();
+    res.json(schoolSupply);
+  } catch (error) {
+    console.error("updateSchoolsupply error:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+}
+
+async function deleteSchoolSupply(req, res) {
+  const { id } = req.params;
+
+  try {
+    const schoolSupply = await SchoolSupply.findOne({ schoolSupplyId: id });
+
+    if (!schoolSupply) {
+      return res.status(404).json({ error: "Util Escolar no encontrado" });
+    }
+
+    await schoolSupply.deleteOne();
+
+    res.json({ message: "Util Escolar eliminado" });
+  } catch (error) {
+    console.error("deleteSchoolSupply error:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+}
+
+async function renderCatalog(req, res) {
+  try {
+    const schoolSupplies = await SchoolSupply.find();
+    res.render("SchoolSupplyCatalog", { schoolSupplies });
+  } catch (err) {
+    console.error("Error al renderizar el catalogo de útiles escolares", err);
+    res.status(500).send("Error al cargar el catálogo de útiles escolares");
+  }
+}
+
+module.exports = {
+  getSchoolSupply,
+  createSchoolSupply,
+  updateSchoolSupply,
+  deleteSchoolSupply,
+  renderCatalog,
 };
