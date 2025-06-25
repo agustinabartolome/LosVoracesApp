@@ -108,7 +108,7 @@ async function createBook(req, res) {
     }
 
     const bookId = Date.now().toString();
-    const newBook = new Book( bookId, title, isbn, price, author, publisherHouse, section, stock, literaryGenre );
+    const newBook = new Book({ bookId, title, isbn, price, author, publisherHouse, section, stock, literaryGenre });
 
     await newBook.save();
     res.status(201).json(newBook);

@@ -92,7 +92,7 @@ const Magazine = require('../model/Magazine.js');
 
 async function getMagazines(req, res) {
     try {
-        const magazine = await magazine.find( );
+        const magazine = await Magazine.find( );
         res.json(magazine);
     } catch (error) {
         console.error('getMagazines error:', error);
@@ -110,7 +110,7 @@ async function createMagazine(req, res) {
         }
 
         const magazineId = Date.now().toString();
-        const newMagazine = new Magazine(magazineId, name, price, issn, number, section, date, stock, issueNumber);
+        const newMagazine = new Magazine({ magazineId, name, price, issn, number, section, date, stock, issueNumber });
         
 
         await newMagazine.save();
