@@ -9,4 +9,6 @@ router.post('/', BookController.createBook);
 router.put('/:id', BookController.updateBook);
 router.delete('/:id', BookController.deleteBook);
 
+router.patch('/:id/stock', BookController.updateBookStock);
+
 module.exports = router;

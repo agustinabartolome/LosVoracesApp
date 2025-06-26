@@ -11,4 +11,6 @@ router.post('/', MagazineController.createMagazine);
 router.put('/:id', MagazineController.updateMagazine);
 router.delete('/:id', MagazineController.deleteMagazine);
 
+router.patch('/:id/stock', MagazineController.updateMagazineStock);
+
 module.exports = router;

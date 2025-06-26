@@ -81,8 +81,8 @@ const Order = require("../model/Order.js");
 
 async function getOrders(req, res) {
   try {
-    const order = await Order.find();
-    res.json(order);
+    const orders = await Order.find();
+    res.json(orders);
   } catch (error) {
     console.error("getOrders error:", error);
     res.status(500).json({ error: "Error interno del servidor" });

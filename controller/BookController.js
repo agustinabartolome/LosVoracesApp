@@ -88,6 +88,7 @@ module.exports = {
 };*/
 
 const Book = require("../model/Book.js");
+const { updateStock } = require("../model/helpers/stockHelper");
 
 async function getBooks(req, res) {
   try {
@@ -174,11 +175,35 @@ async function renderCatalog(req, res) {
   }
 }
 
+async function updateBookStock(req, res) {
+  const { id } = req.params;
+  const { quantity } = req.body; // cantidad para sumar o restar
+
+  if (typeof quantity !== 'number') {
+    return res.status(400).json({ error: 'Quantity debe ser un número' });
+  }
+
+  try {
+    const book = await Book.findOne({ bookId: id });
+    if (!book) return res.status(404).json({ error: "Libro no encontrado" });
+
+    // Usamos la función updateStock para calcular el nuevo stock
+    book.stock = updateStock(book.stock, quantity);
+
+    await book.save();
+    res.json({ message: 'Stock actualizado', book });
+  } catch (error) {
+    console.error("updateBookStock error:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+}
+
 module.exports = {
   getBooks,
   createBook,
   updateBook,
   deleteBook,
   renderCatalog,
+  updateBookStock
 };
 
