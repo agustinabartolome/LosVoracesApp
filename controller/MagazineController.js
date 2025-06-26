@@ -92,8 +92,8 @@ const Magazine = require('../model/Magazine.js');
 
 async function getMagazines(req, res) {
     try {
-        const magazine = await Magazine.find( );
-        res.json(magazine);
+        const magazines = await Magazine.find( );
+        res.json(magazines);
     } catch (error) {
         console.error('getMagazines error:', error);
         res.status(500).json({ error: 'Error interno del servidor' });
@@ -172,7 +172,7 @@ async function renderCatalog(req, res) {
         const magazines = await Magazine.find();
         res.render('MagazineCatalog', { magazines });
     } catch (error) {
-        console.error('Error al renderizar el catalogo de revistas', err);
+        console.error('Error al renderizar el catalogo de revistas', error);
         res.status(500).send('Error al cargar el catálogo de revistas');
     }
 }

@@ -90,12 +90,12 @@ module.exports = {
 
 const SchoolSupply = require("../model/SchoolSupply.js");
 
-async function getSchoolSupply(req, res) {
+async function getSchoolSupplies(req, res) {
   try {
-    const schoolSupply = await Schoolsupply.find();
-    res.json(schoolSupply);
+    const schoolSupplies = await SchoolSupply.find();
+    res.json(schoolSupplies);
   } catch (error) {
-    console.error("getSchoolSupply error:", error);
+    console.error("getSchoolSupplies error:", error);
     res.status(500).json({ error: "Error interno del servidor" });
   }
 }
@@ -182,7 +182,7 @@ async function renderCatalog(req, res) {
 }
 
 module.exports = {
-  getSchoolSupply,
+  getSchoolSupplies,
   createSchoolSupply,
   updateSchoolSupply,
   deleteSchoolSupply,
