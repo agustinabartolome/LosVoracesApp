@@ -89,6 +89,7 @@ module.exports = {
 };*/
 
 const Magazine = require('../model/Magazine.js');
+const { updateStock } = require("../model/helpers/stockHelper");
 
 async function getMagazines(req, res) {
     try {
@@ -177,11 +178,34 @@ async function renderCatalog(req, res) {
     }
 }
 
+async function updateMagazineStock(req, res) {
+  const { id } = req.params;
+  const { quantity } = req.body; 
+
+  if (typeof quantity !== 'number') {
+    return res.status(400).json({ error: 'Quantity debe ser un número' });
+  }
+
+  try {
+    const magazine = await Magazine.findOne({ magazineId: id });
+    if (!magazine) return res.status(404).json({ error: "Revista no encontrada" });
+
+    magazine.stock = updateStock(magazine.stock, quantity);
+
+    await magazine.save();
+    res.json({ message: 'Stock actualizado', magazine });
+  } catch (error) {
+    console.error("updateMagazineStock error:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+}
+
 module.exports = {
     getMagazines,
     createMagazine,
     updateMagazine,
     deleteMagazine,
-    renderCatalog
+    renderCatalog,
+    updateMagazineStock
 };
 
