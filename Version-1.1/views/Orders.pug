@@ -1,0 +1,38 @@
+doctype html 
+html
+    head
+        title Pedidos
+    body 
+        h1 Pedidos
+        table(border='1')
+            thead 
+                tr 
+                    th ID
+                    th ID de Proveedor 
+                    th Producto
+                    th Fecha 
+                    th Descripcion
+                    th Categoria 
+                    th Precio 
+                    th Cantidad 
+                    th Estado
+                    th Total 
+            tbody 
+                each order in orders 
+                    tr 
+                    td= order.orderId 
+                    td= order.supplierId
+                    td
+                        if order.product.name
+                            span= order.product.name 
+                        else if order.product.title
+                            span= order.product.title
+                        else 
+                            span (sin nombre/titulo)
+                    td= order.date 
+                    td= order.description
+                    td= order.category 
+                    td $#{order.price}
+                    td= order.quantityProduct
+                    td= order.status
+                    td= order.total
