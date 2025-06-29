@@ -1,0 +1,22 @@
+doctype html 
+html
+    head
+        title Proveedores
+    body 
+        h1 Proveedores
+        table(border='1')
+            thead 
+                tr 
+                    th ID de Proveedor 
+                    th Nombre
+                    th Telefono 
+                    th Email
+                    th Categoria
+            tbody 
+                each supplier in suppliers 
+                    tr 
+                    td= supplier.supplierId
+                    td= supplier.name
+                    td= supplier.phoneNumber
+                    td= supplier.email
+                    td= supplier.category 

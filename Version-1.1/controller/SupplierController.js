@@ -101,7 +101,7 @@ const Supplier = require ("../model/Supplier");
 async function getSuppliers(req, res) {
   try {
     const suppliers = await Supplier.find();
-    res.json(suppliers);
+    res.render('Suppliers', { suppliers })
   } catch (error) {
     console.error('getSuppliers error:', error);
     res.status(500).json({ error: 'Error interno del servidor' });
