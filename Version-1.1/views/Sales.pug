@@ -1,0 +1,28 @@
+doctype html 
+html
+    head
+        title Ventas
+    body 
+        h1 Ventas
+        table(border='1')
+            thead 
+                tr 
+                    th ID 
+                    th Producto
+                    th Fecha 
+                    th Descripcion
+                    th Categoria 
+                    th Precio 
+                    th Cantidad
+                    th Total 
+            tbody 
+                each sale in sales 
+                    tr 
+                    td= sale.saleId 
+                    td= sale.product
+                    td= sale.date
+                    td= sale.description 
+                    td= sale.category 
+                    td $#{sale.price}
+                    td= sale.quantityProduct
+                    td $#{sale.total}

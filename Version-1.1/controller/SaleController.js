@@ -143,7 +143,7 @@ const Sale = require("../model/Sale");
 async function getSales(req, res) {
   try {
     const sales = await Sale.find();
-    res.json(sales);
+    res.render('Sales', { sales })
   } catch (error) {
     console.error("getSales error:", error);
     res.status(500).json({ error: "Error interno del servidor" });
