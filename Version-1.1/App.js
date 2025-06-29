@@ -20,6 +20,8 @@ const OrderRoute = require('./routes/OrderRoute');
 const SaleRoute = require('./routes/SaleRoute');
 const SupplierRoute = require('./routes/SupplierRoute');
 const AuthRoute = require('./routes/AuthRoute');
+const { authenticateToken, authorizeRole } = require('./middleware/AuthMiddleware');
+const dashboardRoute = require('./routes/DashboardRoute');
 
 // Middleware
 app.use(express.json()); 
@@ -38,6 +40,11 @@ app.use('/order', OrderRoute);
 app.use('/sale', SaleRoute);
 app.use('/supplier', SupplierRoute);
 app.use('/auth', AuthRoute);
+app.get('/dashboard', authenticateToken, authorizeRole('owner', 'manager'), (req, res) => {
+  res.render('dashboard', { user: req.user });
+});
+app.use('/', dashboardRoute);
+
 
 // Only start the server if this file is run directly
 if (require.main === module) {
