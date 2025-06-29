@@ -19,6 +19,7 @@ const SchoolSupplyRoute = require('./routes/SchoolSupplyRoute');
 const OrderRoute = require('./routes/OrderRoute');
 const SaleRoute = require('./routes/SaleRoute');
 const SupplierRoute = require('./routes/SupplierRoute');
+const AuthRoute = require('./routes/AuthRoute');
 
 // Middleware
 app.use(express.json()); 
@@ -36,6 +37,7 @@ app.use('/schoolSupply', SchoolSupplyRoute);
 app.use('/order', OrderRoute);
 app.use('/sale', SaleRoute);
 app.use('/supplier', SupplierRoute);
+app.use('/auth', AuthRoute);
 
 // Only start the server if this file is run directly
 if (require.main === module) {
