@@ -12,6 +12,7 @@ mongoose.connect(process.env.MONGO_URI)
 app.set('view engine', 'pug');
 app.set('views', './views');
 
+const AuthRoute = require('./routes/authRoute');
 const BookRoute = require('./routes/BookRoute');
 const MagazineRoute = require('./routes/MagazineRoute');
 // const ProductRoute = require('./routes/ProductRoute');
@@ -19,12 +20,12 @@ const SchoolSupplyRoute = require('./routes/SchoolSupplyRoute');
 const OrderRoute = require('./routes/OrderRoute');
 const SaleRoute = require('./routes/SaleRoute');
 const SupplierRoute = require('./routes/SupplierRoute');
-const AuthRoute = require('./routes/AuthRoute');
 const { authenticateToken, authorizeRole } = require('./middleware/AuthMiddleware');
 const dashboardRoute = require('./routes/DashboardRoute');
 
 // Middleware
-app.use(express.json()); 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true })); 
 
 // Root route
 app.get('/', (req, res) => {
@@ -32,6 +33,7 @@ app.get('/', (req, res) => {
 });
 
 // RUTAS 
+app.use('/auth', AuthRoute);
 app.use('/book', BookRoute);
 app.use('/magazine', MagazineRoute);
 // app.use('/product', ProductRoute);
@@ -39,10 +41,6 @@ app.use('/schoolSupply', SchoolSupplyRoute);
 app.use('/order', OrderRoute);
 app.use('/sale', SaleRoute);
 app.use('/supplier', SupplierRoute);
-app.use('/auth', AuthRoute);
-app.get('/dashboard', authenticateToken, authorizeRole('owner', 'manager'), (req, res) => {
-  res.render('dashboard', { user: req.user });
-});
 app.use('/', dashboardRoute);
 
 
