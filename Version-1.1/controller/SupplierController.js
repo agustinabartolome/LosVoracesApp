@@ -198,11 +198,61 @@ async function getSupplierById(req, res) {
   }
 }
 
+async function addToCatalog(req, res) {
+  const { id } = req.params; 
+  const { item } = req.body; 
+
+  if (!item || typeof item !== 'object' || !item.id) {
+    return res.status(400).json({ error: 'El ítem del catálogo no es válido o le falta el campo "id"' });
+  }
+
+  try {
+    const supplier = await Supplier.findOne({ supplierId: id });
+    if (!supplier) return res.status(404).json({ error: 'Proveedor no encontrado' });
+
+    const alreadyExists = supplier.catalog.some(existing => existing.id === item.id);
+    if (alreadyExists) {
+      return res.status(400).json({ error: 'Este ítem ya existe en el catálogo' });
+    }
+
+    supplier.catalog.push(item);
+    await supplier.save();
+    res.json(supplier);
+  } catch (error) {
+    console.error('addToCatalog error:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+}
+
+async function removeFromCatalog(req, res) {
+  const { id, itemId } = req.params; 
+
+  try {
+    const supplier = await Supplier.findOne({ supplierId: id });
+    if (!supplier) return res.status(404).json({ error: 'Proveedor no encontrado' });
+
+    const index = supplier.catalog.findIndex(item => item.id === itemId);
+    if (index === -1) {
+      return res.status(404).json({ error: 'Ítem no encontrado en el catálogo' });
+    }
+
+    supplier.catalog.splice(index, 1);
+    await supplier.save();
+    res.json(supplier);
+  } catch (error) {
+    console.error('removeFromCatalog error:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+}
+
+
 module.exports = {
   getSuppliers,
   createSupplier,
   updateSupplier,
   deleteSupplier,
   getSuppliersByCategory,
-  getSupplierById
+  getSupplierById,
+  addToCatalog,        
+  removeFromCatalog
 };

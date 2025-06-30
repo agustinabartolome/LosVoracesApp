@@ -88,7 +88,7 @@ const supplierSchema = new mongoose.Schema({
   phoneNumber: { type: String, required: true }, 
   email: { type: String, required: true, match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ },
   category: { type: String, required: true},
-  
+  catalog: { type: [Object], default: [] }
 });
 
 module.exports = mongoose.model('Supplier', supplierSchema);

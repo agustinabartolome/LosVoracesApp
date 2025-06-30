@@ -36,4 +36,6 @@ html
     else
       p Tu rol es desconocido.
 
-    button(onclick="location.href='/logout'") Cerrar sesión
+
+p Usuario: #{user.username} (#{user.role})
+button(onclick="location.href='/auth/logout'") Cerrar sesión

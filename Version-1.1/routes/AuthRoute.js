@@ -1,9 +1,23 @@
 const express = require('express');
 const router = express.Router();
-const authController = require('../controller/AuthController');
+const AuthController = require('../controller/AuthController');
 
-router.post('/register', authController.register);
+router.get('/login', (req, res) => {
+  res.render('login');
+});
 
-router.post('/login', authController.login);
+router.get('/register', (req, res) => {
+  res.render('register');
+});
+
+router.post('/register', AuthController.register);
+
+router.post('/login', AuthController.login);
+
+router.get('/logout', (req, res) => {
+  res.clearCookie('token'); 
+  res.redirect('/auth/login');
+});
 
 module.exports = router;
+
