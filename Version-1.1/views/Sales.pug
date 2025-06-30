@@ -2,9 +2,11 @@ doctype html
 html
     head
         title Ventas
+        link(rel="stylesheet", href="/css/style.css")
     body 
+        button(onclick="location.href='/dashboard'") Volver 
         h1 Ventas
-        table(border='1')
+        table
             thead 
                 tr 
                     th ID 
@@ -18,11 +20,11 @@ html
             tbody 
                 each sale in sales 
                     tr 
-                    td= sale.saleId 
+                    td(class='num')= sale.saleId 
                     td= sale.product
                     td= sale.date
                     td= sale.description 
                     td= sale.category 
-                    td $#{sale.price}
-                    td= sale.quantityProduct
-                    td $#{sale.total}
+                    td(class='num') $#{sale.price}
+                    td(class='num')= sale.quantityProduct
+                    td(class='num') $#{sale.total}
