@@ -60,10 +60,10 @@ tr {
     border-bottom: 1px solid #ddd;
 }
 
-td {
+td, th {
     padding: 0.5em 1em;
 }
 
-.num {
+.price {
     text-align: end;
 }
