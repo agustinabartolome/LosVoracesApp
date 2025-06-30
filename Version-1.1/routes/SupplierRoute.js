@@ -11,5 +11,7 @@ router.post('/', authenticateToken, authorizeRole('owner'), SupplierController.c
 router.put('/:id', authenticateToken, authorizeRole('owner'), SupplierController.updateSupplier);
 router.delete('/:id', authenticateToken, authorizeRole('owner'), SupplierController.deleteSupplier);
 
+router.patch('/:id/catalog', SupplierController.addToCatalog); 
+router.delete('/:id/catalog/:itemId', SupplierController.removeFromCatalog);
 
 module.exports = router;
