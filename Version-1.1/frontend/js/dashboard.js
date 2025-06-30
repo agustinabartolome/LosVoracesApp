@@ -10,12 +10,28 @@ async function getUserData() {
     }
 
     const user = await res.json();
+
+
     document.getElementById('username').textContent = user.username;
     document.getElementById('role-info').textContent = `Rol: ${user.role}`;
 
+    
+    document.body.classList.add(user.role);
+
+  
     if (user.role !== 'owner') {
       document.getElementById('management-section').style.display = 'none';
     }
+
+ 
+    document.getElementById('librosLink').href = `${BACKEND_URL}/book/catalog`;
+    document.getElementById('revistasLink').href = `${BACKEND_URL}/magazine/catalog`;
+    document.getElementById('utilesLink').href = `${BACKEND_URL}/schoolSupply/catalog`;
+
+    document.getElementById('ordenesLink').href = `${BACKEND_URL}/order`;
+    document.getElementById('ventasLink').href = `${BACKEND_URL}/sale`;
+    document.getElementById('proveedoresLink').href = `${BACKEND_URL}/supplier`;
+
   } catch (err) {
     console.error('Error al obtener el usuario:', err);
     window.location.href = 'login.html';
@@ -31,14 +47,3 @@ async function logout() {
 }
 
 getUserData();
-
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('librosLink').href = `${BACKEND_URL}/book/catalog`;
-  document.getElementById('revistasLink').href = `${BACKEND_URL}/magazine/catalog`;
-  document.getElementById('utilesLink').href = `${BACKEND_URL}/schoolSupply/catalog`;
-
-  document.getElementById('ordenesLink').href = `${BACKEND_URL}/order`;
-  document.getElementById('ventasLink').href = `${BACKEND_URL}/sale`;
-  document.getElementById('proveedoresLink').href = `${BACKEND_URL}/supplier`;
-});
-
