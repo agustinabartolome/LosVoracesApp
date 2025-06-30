@@ -10,5 +10,7 @@ router.post('/', SupplierController.createSupplier);
 router.put('/:id', SupplierController.updateSupplier);
 router.delete('/:id', SupplierController.deleteSupplier);
 
+router.patch('/:id/catalog', SupplierController.addToCatalog); 
+router.delete('/:id/catalog/:itemId', SupplierController.removeFromCatalog);
 
 module.exports = router;
