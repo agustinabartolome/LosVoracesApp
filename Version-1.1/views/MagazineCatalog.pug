@@ -2,9 +2,11 @@ doctype html
 html
     head
         title Catalogo de Revistas
+        link(rel="stylesheet", href="/css/style.css")
     body 
+        button(onclick="location.href='/dashboard'") Volver
         h1 Catalogo de Revistas 
-        table(border='1')
+        table
             thead 
                 tr 
                     th ID
@@ -19,12 +21,12 @@ html
             tbody 
                 each magazine in magazines 
                     tr 
-                        td= magazine.magazineId
+                        td(class='num')= magazine.magazineId
                         td= magazine.name
                         td= magazine.date
-                        td= magazine.issueNumber 
-                        td= magazine.number
-                        td= magazine.issn 
+                        td(class='num')= magazine.issueNumber 
+                        td(class='num')= magazine.number
+                        td(class='num')= magazine.issn 
                         td= magazine.section 
-                        td $#{magazine.price}
-                        td= magazine.stock
+                        td(class='num') $#{magazine.price}
+                        td(class='num')= magazine.stock
