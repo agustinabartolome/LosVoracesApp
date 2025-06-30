@@ -61,9 +61,5 @@ tr {
 }
 
 td {
-    padding: 0.5em 1em;
-}
-
-.num {
-    text-align: end;
+    padding: 0 0.5em;
 }

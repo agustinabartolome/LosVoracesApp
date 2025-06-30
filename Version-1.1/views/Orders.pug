@@ -22,8 +22,8 @@ html
             tbody 
                 each order in orders 
                     tr 
-                    td(class='num')= order.orderId 
-                    td(class='num')= order.supplierId
+                    td= order.orderId 
+                    td(class="center")= order.supplierId
                     td
                         if order.product.name
                             span= order.product.name 
@@ -34,7 +34,7 @@ html
                     td= order.date 
                     td= order.description
                     td= order.category 
-                    td(class='num') $#{order.price}
-                    td(class='num')= order.quantityProduct
+                    td $#{order.price}
+                    td= order.quantityProduct
                     td= order.status
-                    td(class='num') $#{order.total}
+                    td $#{order.total}
