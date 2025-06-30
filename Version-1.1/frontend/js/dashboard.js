@@ -1,6 +1,6 @@
 async function getUserData() {
   try {
-    const res = await fetch('https:///auth/me', {
+    const res = await fetch(`${BACKEND_URL}/auth/me`, {
       credentials: 'include'
     });
 
@@ -13,7 +13,6 @@ async function getUserData() {
     document.getElementById('username').textContent = user.username;
     document.getElementById('role-info').textContent = `Rol: ${user.role}`;
 
-    // Ocultar gestión si no es owner
     if (user.role !== 'owner') {
       document.getElementById('management-section').style.display = 'none';
     }
@@ -24,7 +23,7 @@ async function getUserData() {
 }
 
 async function logout() {
-  await fetch('https:///auth/logout', {
+  await fetch(`${BACKEND_URL}/auth/logout`, {
     method: 'GET',
     credentials: 'include'
   });
@@ -32,3 +31,14 @@ async function logout() {
 }
 
 getUserData();
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('librosLink').href = `${BACKEND_URL}/book/catalog`;
+  document.getElementById('revistasLink').href = `${BACKEND_URL}/magazine/catalog`;
+  document.getElementById('utilesLink').href = `${BACKEND_URL}/schoolSupply/catalog`;
+
+  document.getElementById('ordenesLink').href = `${BACKEND_URL}/order`;
+  document.getElementById('ventasLink').href = `${BACKEND_URL}/sale`;
+  document.getElementById('proveedoresLink').href = `${BACKEND_URL}/supplier`;
+});
+

@@ -6,33 +6,36 @@
   <link rel="stylesheet" href="css/dashboard.css" />
 </head>
 <body>
-  <div class="container dashboard-container">
+  <div class="container">
     <h1>Bienvenido, <span id="username">Usuario</span>!</h1>
-    <p id="role-info"></p>
+    <p id="role-info">Rol: </p>
 
-    <div class="dashboard-cards">
+    <div class="dashboard-container">
       <div class="card" id="catalog-section">
         <h2>Catálogos</h2>
         <ul>
-          <li><a href="https:///book/catalog" target="_blank">📚 Libros</a></li>
-          <li><a href="https:///magazine/catalog" target="_blank">📰 Revistas</a></li>
-          <li><a href="https:///schoolSupply/catalog" target="_blank">✏️ Art. Librería</a></li>
+          <li><a id="librosLink" target="_blank">📚 Libros</a></li>
+          <li><a id="revistasLink" target="_blank">📰 Revistas</a></li>
+          <li><a id="utilesLink" target="_blank">✏️ Art. Librería</a></li>
         </ul>
       </div>
 
       <div class="card" id="management-section">
         <h2>Gestión</h2>
         <ul>
-          <li><a href="https:///order" target="_blank">📦 Órdenes</a></li>
-          <li><a href="https:///sale" target="_blank">💸 Ventas</a></li>
-          <li><a href="https:///supplier" target="_blank">🚚 Proveedores</a></li>
+          <li><a id="ordenesLink" target="_blank">📦 Órdenes</a></li>
+          <li><a id="ventasLink" target="_blank">💸 Ventas</a></li>
+          <li><a id="proveedoresLink" target="_blank">🚚 Proveedores</a></li>
         </ul>
       </div>
     </div>
 
-    <button onclick="logout()">Cerrar sesión</button>
+    <div style="text-align: center; margin-top: 2rem;">
+      <button class="logout-button" onclick="logout()">Cerrar sesión</button>
+    </div>
   </div>
 
+  <script src="js/config.js"></script>
   <script src="js/dashboard.js"></script>
 </body>
 </html>

@@ -6,7 +6,7 @@ document.getElementById('registerForm').addEventListener('submit', async functio
   const role = document.getElementById('role').value;
 
   try {
-    const res = await fetch('https:///auth/register', {
+    const res = await fetch(`${BACKEND_URL}/auth/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
