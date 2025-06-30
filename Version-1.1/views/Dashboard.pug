@@ -2,28 +2,40 @@ doctype html
 html
   head
     title Dashboard
-    link(rel="stylesheet", href="/css/style.css")
-  body(class="nomargin")
-    header 
-      p Usuario: #{user.username} (#{user.role})
-      button(onclick="location.href='/auth/logout'") Cerrar sesión
-      
-    main
-      h1 Bienvenido, #{user.username}!
+  body
+    h1 Bienvenido, #{user.username}!
 
-      if user.role === 'owner'
-        p Eres dueño y tienes acceso completo.
-      else if user.role === 'manager'
-        p Eres encargado y tienes acceso limitado.
-      else
-        p Tu rol es desconocido.
-        
+    if user.role === 'owner'
+      p Eres dueño y tienes acceso completo.
+      
       h2 Catálogos disponibles:
-      button(class='option' onclick="location.href='/book/catalog'") Libros
-      button(class='option' onclick="location.href='/magazine/catalog'") Revistas
-      button(class='option' onclick="location.href='/schoolSupply/catalog'") Artículos de Librería
+      button(onclick="location.href='/book/catalog'") Libros
+      button(onclick="location.href='/magazine/catalog'") Revistas
+      button(onclick="location.href='/schoolSupply/catalog'") Artículos de Librería
 
       h2 Gestión:
-      button(class='option' onclick="location.href='/order'") Pedidos
-      button(class='option' onclick="location.href='/sale'") Ventas
-      button(class='option' onclick="location.href='/supplier'") Proveedores
+      button(onclick="location.href='/order'") Orders
+      button(onclick="location.href='/sale'") Sales
+      button(onclick="location.href='/supplier'") Suppliers
+
+
+    else if user.role === 'manager'
+      p Eres encargado y tienes acceso limitado.
+
+      h2 Catálogos disponibles:
+      button(onclick="location.href='/book/catalog'") Libros
+      button(onclick="location.href='/magazine/catalog'") Revistas
+      button(onclick="location.href='/schoolSupply/catalog'") Artículos de Librería
+
+      h2 Gestión:
+      button(onclick="location.href='/order'") Orders
+      button(onclick="location.href='/sale'") Sales
+      button(onclick="location.href='/supplier'") Suppliers
+
+
+    else
+      p Tu rol es desconocido.
+
+
+p Usuario: #{user.username} (#{user.role})
+button(onclick="location.href='/auth/logout'") Cerrar sesión

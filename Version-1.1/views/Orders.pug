@@ -2,11 +2,9 @@ doctype html
 html
     head
         title Pedidos
-        link(rel="stylesheet", href="/css/style.css")
     body 
-        button(onclick="location.href='/dashboard'") Volver
         h1 Pedidos
-        table
+        table(border='1')
             thead 
                 tr 
                     th ID
@@ -23,7 +21,7 @@ html
                 each order in orders 
                     tr 
                     td= order.orderId 
-                    td(class="center")= order.supplierId
+                    td= order.supplierId
                     td
                         if order.product.name
                             span= order.product.name 

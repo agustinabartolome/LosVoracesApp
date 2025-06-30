@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
-const path = require('path')
 const dotenv = require('dotenv');
 dotenv.config();
 const mongoose = require('mongoose');
@@ -14,7 +13,6 @@ mongoose.connect(process.env.MONGO_URI, {
 
 app.set('view engine', 'pug');
 app.set('views', './views');
-app.use(express.static(path.join(__dirname, 'public')))
 
 const cookieParser = require('cookie-parser');
 const AuthRoute = require('./routes/authRoute');
