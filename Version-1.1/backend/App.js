@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const dotenv = require('dotenv');
@@ -25,6 +26,9 @@ const { authenticateToken, authorizeRole } = require('./middleware/AuthMiddlewar
 const dashboardRoute = require('./routes/DashboardRoute');
 
 // Middleware
+app.use(cors({
+  origin: '',
+credentials: true}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); 
 app.use(cookieParser());
