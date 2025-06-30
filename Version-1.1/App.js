@@ -12,6 +12,7 @@ mongoose.connect(process.env.MONGO_URI)
 app.set('view engine', 'pug');
 app.set('views', './views');
 
+const cookieParser = require('cookie-parser');
 const AuthRoute = require('./routes/authRoute');
 const BookRoute = require('./routes/BookRoute');
 const MagazineRoute = require('./routes/MagazineRoute');
@@ -26,10 +27,17 @@ const dashboardRoute = require('./routes/DashboardRoute');
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); 
+app.use(cookieParser());
 
 // Root route
+/*
 app.get('/', (req, res) => {
   res.render('home');
+});
+*/
+
+app.get('/', (req, res) => {
+  res.redirect('/auth/login');
 });
 
 // RUTAS 
