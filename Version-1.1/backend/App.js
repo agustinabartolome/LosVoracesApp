@@ -23,23 +23,25 @@ const { authenticateToken, authorizeRole } = require('./middleware/AuthMiddlewar
 const DashboardRoute = require('./routes/DashboardRoute');
 
 // Middleware
-app.use(cors({
-  origin: (origin, callback) => {
-    const whitelist = [
-      'http://localhost:3001',
-      'https://los-voraces-app-frontend.vercel.app'
-    ];
+origin: (origin, callback) => {
+  const whitelist = [
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'https://los-voraces-app-frontend.vercel.app'
+  ];
 
-    const isVercelPreview = origin?.endsWith('.vercel.app');
+  const isVercelPreview = origin?.endsWith('.vercel.app');
 
-    if (whitelist.includes(origin) || isVercelPreview) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true
-}));
+  if (!origin) {
+    
+    callback(null, true);
+  } else if (whitelist.includes(origin) || isVercelPreview) {
+    callback(null, true);
+  } else {
+    callback(new Error('Not allowed by CORS'));
+  }
+}
+
 
 
 app.use(express.json());
