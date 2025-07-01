@@ -28,6 +28,7 @@ const DashboardRoute = require('./routes/DashboardRoute');
 // Middleware
 app.use(cors({
   origin: 'http://localhost:3001',
+  origin: 'https://los-voraces-app-frontend.vercel.app/',
 credentials: true}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); 
