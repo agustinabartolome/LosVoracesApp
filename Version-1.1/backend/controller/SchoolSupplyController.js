@@ -136,7 +136,7 @@ async function updateSchoolSupply(req, res) {
     const schoolSupply = await SchoolSupply.findOne({ schoolSupplyId: id });
 
     if (!schoolSupply)
-      return res.status(404).json({ error: "Util Escolar no encontrado" });
+      return res.status(404).json({ error: "Útil escolar no encontrado" });
 
     schoolSupply.name = name;
     schoolSupply.price = price;
@@ -160,12 +160,12 @@ async function deleteSchoolSupply(req, res) {
     const schoolSupply = await SchoolSupply.findOne({ schoolSupplyId: id });
 
     if (!schoolSupply) {
-      return res.status(404).json({ error: "Util Escolar no encontrado" });
+      return res.status(404).json({ error: "Útil escolar no encontrado" });
     }
 
     await schoolSupply.deleteOne();
 
-    res.json({ message: "Util Escolar eliminado" });
+    res.json({ message: "Útil escolar eliminado" });
   } catch (error) {
     console.error("deleteSchoolSupply error:", error);
     res.status(500).json({ error: "Error interno del servidor" });

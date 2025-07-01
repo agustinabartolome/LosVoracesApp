@@ -92,7 +92,7 @@ const bookSchema = new mongoose.Schema({
   author: { type: String, required: true },
   publisherHouse: { type: String, required: true },
   section: { type: String, required: true },
-  stock: { type: Number, default: 0 },
+  stock: { type: Number, default: 0, min: 0 },
   literaryGenre: { type: String, required: true }
 });
 

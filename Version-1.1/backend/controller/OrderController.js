@@ -114,7 +114,7 @@ async function updateOrder(req, res) {
 
   try {
     const order = await Order.findOne({ orderId: id });
-    if (!order) return res.status(404).json({ error: "Venta no encontrada" });
+    if (!order) return res.status(404).json({ error: "Orden no encontrada" });
 
     order.product = product;
     order.supplierId = supplierId;
