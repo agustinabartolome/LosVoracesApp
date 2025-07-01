@@ -30,7 +30,7 @@ module.exports = Product;*/
 
 const mongoose = require('mongoose');
 
-const ProductSchema = new mongoose.Schema({
+const productSchema = new mongoose.Schema({
   productId: { type: String, required: true, unique: true },  
   name: { type: String, required: true },
   category: { type: String, required: true}
