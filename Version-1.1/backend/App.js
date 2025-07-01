@@ -11,8 +11,8 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('Conectado a MongoDB'))  
   .catch(err => console.error(err));        
 
-app.set('view engine', 'pug');
-app.set('views', './views');
+// app.set('view engine', 'pug');
+// app.set('views', './views');
 
 const cookieParser = require('cookie-parser');
 const BookRoute = require('./routes/BookRoute');
@@ -36,15 +36,8 @@ app.use(cookieParser());
 app.use(express.static('public'));
 
 
-// Root route
-/*
 app.get('/', (req, res) => {
-  res.render('home');
-});
-*/
-
-app.get('/', (req, res) => {
-  res.redirect('/auth/login');
+  res.status(200).json({ message: 'API funcionando correctamente' });
 });
 
 // RUTAS 
@@ -57,7 +50,6 @@ app.use('/order', OrderRoute);
 app.use('/sale', SaleRoute);
 app.use('/supplier', SupplierRoute);
 app.use('/', DashboardRoute);
-
 
 // Only start the server if this file is run directly
 if (require.main === module) {
