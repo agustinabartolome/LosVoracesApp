@@ -22,23 +22,25 @@ const SupplierRoute = require('./routes/SupplierRoute');
 const { authenticateToken, authorizeRole } = require('./middleware/AuthMiddleware');
 const DashboardRoute = require('./routes/DashboardRoute');
 
-// Middleware - CORS dinámico
+// Middleware
 app.use(cors({
-  origin: function(origin, callback) {
-    const allowedOrigins = [
+  origin: (origin, callback) => {
+    const whitelist = [
       'http://localhost:3001',
-      'https://los-voraces-app-frontend-8ev8f4myk-abrils-projects-b6ccdbdf.vercel.app',
-
+      'https://los-voraces-app-frontend.vercel.app'
     ];
-  
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+
+    const isVercelPreview = origin?.endsWith('.vercel.app');
+
+    if (whitelist.includes(origin) || isVercelPreview) {
       callback(null, true);
     } else {
-      callback(new Error('No permitido por CORS'));
+      callback(new Error('Not allowed by CORS'));
     }
   },
   credentials: true
 }));
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); 
