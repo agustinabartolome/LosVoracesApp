@@ -11,10 +11,7 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('Conectado a MongoDB'))  
   .catch(err => console.error(err));        
 
-// app.set('view engine', 'pug');
-// app.set('views', './views');
-
-const cookieParser = require('cookie-parser');
+// const cookieParser = require('cookie-parser');
 const BookRoute = require('./routes/BookRoute');
 const MagazineRoute = require('./routes/MagazineRoute');
 // const ProductRoute = require('./routes/ProductRoute');
@@ -25,16 +22,29 @@ const SupplierRoute = require('./routes/SupplierRoute');
 const { authenticateToken, authorizeRole } = require('./middleware/AuthMiddleware');
 const DashboardRoute = require('./routes/DashboardRoute');
 
-// Middleware
+// Middleware - CORS dinámico
 app.use(cors({
-  origin: [ 'http://localhost:3001',
-'https://los-voraces-app-frontend.vercel.app/'],
-credentials: true}));
+  origin: function(origin, callback) {
+    const allowedOrigins = [
+      'http://localhost:3001',
+      'https://los-voraces-app-frontend-8ev8f4myk-abrils-projects-b6ccdbdf.vercel.app',
+
+    ];
+  
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('No permitido por CORS'));
+    }
+  },
+  credentials: true
+}));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); 
+const cookieParser = require('cookie-parser');
 app.use(cookieParser());
 app.use(express.static('public'));
-
 
 app.get('/', (req, res) => {
   res.status(200).json({ message: 'API funcionando correctamente' });
