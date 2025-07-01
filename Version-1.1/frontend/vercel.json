@@ -1,15 +1,10 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "frontend/**/*",
-      "use": "@vercel/static"
-    }
-  ],
+  "public": true,
   "routes": [
-    { "src": "/", "dest": "frontend/index.html" },
-    { "src": "/login", "dest": "frontend/login.html" },
-    { "src": "/register", "dest": "frontend/register.html" },
-    { "src": "/dashboard", "dest": "frontend/dashboard.html" }
+    { "src": "/", "dest": "/frontend/index.html" },
+    { "src": "/login", "dest": "/frontend/login.html" },
+    { "src": "/register", "dest": "/frontend/register.html" },
+    { "src": "/dashboard", "dest": "/frontend/dashboard.html" }
   ]
 }
