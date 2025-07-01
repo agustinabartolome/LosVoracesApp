@@ -23,7 +23,7 @@ const OrderRoute = require('./routes/OrderRoute');
 const SaleRoute = require('./routes/SaleRoute');
 const SupplierRoute = require('./routes/SupplierRoute');
 const { authenticateToken, authorizeRole } = require('./middleware/AuthMiddleware');
-const dashboardRoute = require('./routes/DashboardRoute');
+const DashboardRoute = require('./routes/DashboardRoute');
 
 // Middleware
 app.use(cors({
