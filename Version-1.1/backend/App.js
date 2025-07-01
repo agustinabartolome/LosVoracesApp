@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
+const AuthRoute = require('./routes/AuthRoute');
 const PORT = process.env.PORT || 3000;
 const dotenv = require('dotenv');
 dotenv.config();
@@ -55,7 +56,7 @@ app.use('/schoolSupply', SchoolSupplyRoute);
 app.use('/order', OrderRoute);
 app.use('/sale', SaleRoute);
 app.use('/supplier', SupplierRoute);
-app.use('/', dashboardRoute);
+app.use('/', DashboardRoute);
 
 
 // Only start the server if this file is run directly
