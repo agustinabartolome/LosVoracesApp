@@ -15,7 +15,6 @@ app.set('view engine', 'pug');
 app.set('views', './views');
 
 const cookieParser = require('cookie-parser');
-const AuthRoute = require('./routes/authRoute');
 const BookRoute = require('./routes/BookRoute');
 const MagazineRoute = require('./routes/MagazineRoute');
 // const ProductRoute = require('./routes/ProductRoute');
