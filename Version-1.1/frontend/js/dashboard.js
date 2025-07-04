@@ -38,6 +38,8 @@ async function getUserData() {
   }
 }
 
+//Se comenta función que se reemplaza en archivo propio
+/*
 async function logout() {
   await fetch(`${BACKEND_URL}/auth/logout`, {
     method: 'GET',
@@ -45,5 +47,5 @@ async function logout() {
   });
   window.location.href = 'login.html';
 }
-
+*/
 getUserData();
