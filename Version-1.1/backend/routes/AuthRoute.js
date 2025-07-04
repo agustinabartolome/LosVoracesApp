@@ -24,7 +24,7 @@ router.post('/login', AuthController.login);
 
 router.get('/logout', (req, res) => {
   res.clearCookie('token'); 
-  res.redirect('/auth/login');
+  res.json({ message: 'Sesión cerrada' });
 });
 
 module.exports = router;
