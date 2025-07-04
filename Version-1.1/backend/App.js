@@ -8,6 +8,11 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const path = require('path');
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
+
+
 // Rutas
 const AuthRoute = require('./routes/AuthRoute');
 const BookRoute = require('./routes/BookRoute');
