@@ -121,17 +121,14 @@ async function getSuppliers(req, res) {
 
 async function createSupplier(req, res) {
   try {
-
-    const newSupplier = new Supplier ({ name, phoneNumber, email, category, catalog }) = req.body;
-
+    const { name, phoneNumber, email, category, catalog } = req.body;
 
     if (!name || !phoneNumber || !email || !category || !catalog) {
       return res.status(400).json({ error: 'Faltan campos obligatorios' });
     }
 
     const supplierId = Date.now().toString();
-    const newSupplier = new Supplier(supplierId, name, phoneNumber, email, category, catalog);
-    
+    const newSupplier = new Supplier({ supplierId, name, phoneNumber, email, category, catalog });
 
     await newSupplier.save();
     res.status(201).json(newSupplier);
@@ -140,6 +137,7 @@ async function createSupplier(req, res) {
     res.status(500).json({ error: 'Error interno del servidor' });
   }
 }
+
 
 async function updateSupplier(req, res) {
   const { id } = req.params;
