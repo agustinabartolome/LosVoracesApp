@@ -79,6 +79,16 @@ module.exports = {
 
 const Order = require("../model/Order.js");
 
+async function renderOrders(req, res) {
+  try {
+    const orders = await Order.find().lean();   
+    res.render('Order', { orders });            
+  } catch (err) {
+    console.error('Error al renderizar órdenes', err);
+    res.status(500).send('Error al cargar las órdenes');
+  }
+}
+
 async function getOrders(req, res) {
   try {
     const orders = await Order.find();
@@ -154,4 +164,5 @@ module.exports = {
   createOrder,
   updateOrder,
   deleteOrder,
+  renderOrders
 };
