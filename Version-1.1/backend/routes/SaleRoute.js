@@ -3,6 +3,8 @@ const router = express.Router();
 const SaleController = require('../controller/SaleController');
 const { authenticateToken, authorizeRole } = require('../middleware/AuthMiddleware');
 
+router.get('/catalog', authenticateToken, SaleController.renderSales);
+
 router.get('/', authenticateToken, SaleController.getSales);
 router.post('/', authenticateToken, SaleController.createSale);
 router.put('/:id', authenticateToken, authorizeRole('owner'), SaleController.updateSale);
