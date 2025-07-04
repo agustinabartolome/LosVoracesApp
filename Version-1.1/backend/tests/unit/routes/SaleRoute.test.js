@@ -20,6 +20,7 @@ jest.mock('../../../controller/SaleController', () => ({
   updateSale: jest.fn(),
   deleteSale: jest.fn(),
   getTopSellingProducts: jest.fn(),
+  renderSales: jest.fn((req, res) => res.status(200).json({ sales: [] }))
 }));
 
 const SaleRoute = require('../../../routes/SaleRoute');

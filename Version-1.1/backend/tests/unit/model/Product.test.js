@@ -50,9 +50,12 @@ describe('Product Model Test', () => {
             const validationError = product.validateSync();
             
             expect(validationError).toBeDefined();
-            expect(validationError.errors.productId).toBeDefined();
-            expect(validationError.errors.name).toBeDefined();
-            expect(validationError.errors.category).toBeDefined();
+            const fields = ['productId', 'name', 'category'];
+            fields.forEach(field => {
+                expect(validationError.errors[field]).toBeDefined();
+                expect(validationError.errors[field].kind).toBe('required');
+                expect(validationError.errors[field].message).toMatch(new RegExp('Path `' + field + '` is required'));
+            });
         });
 
         test('should fail validation with empty productId', () => {

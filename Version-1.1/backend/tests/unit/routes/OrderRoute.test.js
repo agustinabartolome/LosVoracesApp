@@ -18,6 +18,7 @@ jest.mock('../../../controller/OrderController', () => ({
   createOrder: (req, res) => res.status(201).json(newOrder),
   updateOrder: jest.fn(),
   deleteOrder: jest.fn(),
+  renderOrders: jest.fn((req, res) => res.status(200).json({ orders: [] }))
 }));
 
 const OrderRoute = require('../../../routes/OrderRoute');

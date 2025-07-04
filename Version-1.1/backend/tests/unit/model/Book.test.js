@@ -64,13 +64,13 @@ describe('Book Model Test', () => {
             const validationError = book.validateSync();
             
             expect(validationError).toBeDefined();
-            expect(validationError.errors.bookId).toBeDefined();
-            expect(validationError.errors.isbn).toBeDefined();
-            expect(validationError.errors.price).toBeDefined();
-            expect(validationError.errors.author).toBeDefined();
-            expect(validationError.errors.publisherHouse).toBeDefined();
-            expect(validationError.errors.section).toBeDefined();
-            expect(validationError.errors.literaryGenre).toBeDefined();
+            expect(validationError.errors.bookId.kind).toBe('required');
+            expect(validationError.errors.isbn.kind).toBe('required');
+            expect(validationError.errors.price.kind).toBe('required');
+            expect(validationError.errors.author.kind).toBe('required');
+            expect(validationError.errors.publisherHouse.kind).toBe('required');
+            expect(validationError.errors.section.kind).toBe('required');
+            expect(validationError.errors.literaryGenre.kind).toBe('required');
         });
 
         test('should fail validation with negative price', () => {
@@ -79,7 +79,9 @@ describe('Book Model Test', () => {
             const validationError = book.validateSync();
             
             expect(validationError).toBeDefined();
-            expect(validationError.errors.price).toBeDefined();
+            expect(validationError.errors.price.kind).toBe('min');
+            // el mensaje de error que tira Mongoose es "Path `price` (-10) is less than minimum allowed value (0)."
+            expect(validationError.errors.price.message).toMatch(/minimum allowed value/);
         });
 
         test('should fail validation with negative stock', () => {
@@ -88,7 +90,9 @@ describe('Book Model Test', () => {
             const validationError = book.validateSync();
             
             expect(validationError).toBeDefined();
-            expect(validationError.errors.stock).toBeDefined();
+            expect(validationError.errors.stock.kind).toBe('min');
+            // el mensaje de error que tira Mongoose es "Path `stock` (-5) is less than minimum allowed value (0)."
+            expect(validationError.errors.stock.message).toMatch(/minimum allowed value/);
         });
 
         test('should pass validation with valid data', () => {

@@ -24,6 +24,7 @@ jest.mock('../../../controller/SupplierController', () => ({
   getSuppliersByCategory: jest.fn(),
   addToCatalog: jest.fn((req, res) => res.status(200).json({ success: true })),
   removeFromCatalog: jest.fn((req, res) => res.status(200).json({ success: true })),
+  renderSupplierCatalog: jest.fn((req, res) => res.status(200).json({ catalog: [] }))
 }));
 
 const SupplierRoute = require('../../../routes/SupplierRoute');

@@ -71,12 +71,12 @@ describe('Sale Model Test', () => {
             const validationError = sale.validateSync();
             
             expect(validationError).toBeDefined();
-            expect(validationError.errors.saleId).toBeDefined();
-            expect(validationError.errors.date).toBeDefined();
-            expect(validationError.errors.category).toBeDefined();
-            expect(validationError.errors.price).toBeDefined();
-            expect(validationError.errors.quantityProduct).toBeDefined();
-            expect(validationError.errors.total).toBeDefined();
+            expect(validationError.errors.saleId.kind).toBe('required');
+            expect(validationError.errors.date.kind).toBe('required');
+            expect(validationError.errors.category.kind).toBe('required');
+            expect(validationError.errors.price.kind).toBe('required');
+            expect(validationError.errors.quantityProduct.kind).toBe('required');
+            expect(validationError.errors.total.kind).toBe('required');
         });
 
         test('should validate price is positive', () => {
@@ -85,7 +85,8 @@ describe('Sale Model Test', () => {
             const validationError = sale.validateSync();
             
             expect(validationError).toBeDefined();
-            expect(validationError.errors.price).toBeDefined();
+            expect(validationError.errors.price.kind).toBe('min');
+            expect(validationError.errors.price.message).toMatch(/minimum allowed value/);
         });
 
         test('should validate quantity is positive', () => {
@@ -94,7 +95,8 @@ describe('Sale Model Test', () => {
             const validationError = sale.validateSync();
             
             expect(validationError).toBeDefined();
-            expect(validationError.errors.quantityProduct).toBeDefined();
+            expect(validationError.errors.quantityProduct.kind).toBe('min');
+            expect(validationError.errors.quantityProduct.message).toMatch(/minimum allowed value/);
         });
 
         test('should validate description type', () => {
