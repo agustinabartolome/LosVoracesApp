@@ -23,7 +23,13 @@ html
         each order in orders
           tr
             td= order.orderId
-            td= typeof order.product === 'string' ? order.product : order.product.name
+            td
+                        if order.product.name
+                            span= order.product.name 
+                        else if order.product.title
+                            span= order.product.title
+                        else 
+                            span (sin nombre/titulo)
             td= order.description
             td= order.date.toISOString().slice(0,10)   
             td= order.category

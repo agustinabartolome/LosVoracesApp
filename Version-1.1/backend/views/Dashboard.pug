@@ -5,8 +5,11 @@ html
   body
     h1 Bienvenido, #{user.username}!
 
-    if user.role === 'owner'
-      p Eres dueño y tienes acceso completo.
+    if user.role === 'owner' || 'manager'
+      if user.role === 'owner'
+        p Eres dueño y tienes acceso completo
+      else
+        p Eres encargado y tienes acceso limitado
       
       h2 Catálogos disponibles:
       button(onclick="location.href='/book/catalog'") Libros
@@ -14,24 +17,9 @@ html
       button(onclick="location.href='/schoolSupply/catalog'") Artículos de Librería
 
       h2 Gestión:
-      button(onclick="location.href='/order'") Orders
-      button(onclick="location.href='/sale'") Sales
-      button(onclick="location.href='/supplier'") Suppliers
-
-
-    else if user.role === 'manager'
-      p Eres encargado y tienes acceso limitado.
-
-      h2 Catálogos disponibles:
-      button(onclick="location.href='/book/catalog'") Libros
-      button(onclick="location.href='/magazine/catalog'") Revistas
-      button(onclick="location.href='/schoolSupply/catalog'") Artículos de Librería
-
-      h2 Gestión:
-      button(onclick="location.href='/order'") Órdenes
-      button(onclick="location.href='/sale'") Ventas
-      button(onclick="location.href='/supplier'") Proveedores
-
+      button(onclick="location.href='/order/catalog'") Órdenes
+      button(onclick="location.href='/sale/catalog'") Ventas
+      button(onclick="location.href='/supplier/catalog'") Proveedores
 
     else
       p Tu rol es desconocido.

@@ -143,7 +143,7 @@ const Sale = require("../model/Sale");
 async function renderSales(req, res) {
   try {
     const sales = await Sale.find().lean();
-    res.render("Sale", { sales });
+    res.render("SaleCatalog", { sales });
   } catch (error) {
     console.error("Error al renderizar ventas:", error);
     res.status(500).send("Error al cargar el registro de ventas");
