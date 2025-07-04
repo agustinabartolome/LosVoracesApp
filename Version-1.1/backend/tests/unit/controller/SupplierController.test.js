@@ -74,14 +74,14 @@ describe('SupplierController', () => {
 
       await SupplierController.createSupplier(req, res);
 
-      expect(Supplier).toHaveBeenCalledWith(
-        '1',
-        req.body.name,
-        req.body.phoneNumber,
-        req.body.email,
-        req.body.category,
-        req.body.catalog
-      );
+      expect(Supplier).toHaveBeenCalledWith({
+        supplierId: '1',
+        name: req.body.name,
+        phoneNumber: req.body.phoneNumber,
+        email: req.body.email,
+        category: req.body.category,
+        catalog: req.body.catalog
+      });
       expect(mockSupplier.save).toHaveBeenCalled();
       expect(res.status).toHaveBeenCalledWith(201);
       expect(res.json).toHaveBeenCalledWith(mockSupplier);
@@ -186,7 +186,7 @@ describe('SupplierController', () => {
 
       expect(Supplier.findOne).toHaveBeenCalledWith({ supplierId: '1' });
       expect(mockSupplier.deleteOne).toHaveBeenCalled();
-      expect(res.json).toHaveBeenCalledWith({ messaje: 'Proveedor eliminado' });
+      expect(res.json).toHaveBeenCalledWith({ message: 'Proveedor eliminado' });
     });
   });
 

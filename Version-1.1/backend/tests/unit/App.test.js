@@ -30,14 +30,14 @@ jest.mock('../../middleware/AuthMiddleware', () => ({
 const app = require('../../App');
 
 describe('App.js', () => {
-  it('should redirect to login page on GET /', async () => {
+  it('should return API status message on GET /', async () => {
     const res = await request(app).get('/');
-    expect(res.statusCode).toBe(302);
-    expect(res.headers.location).toBe('/auth/login');
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toEqual({ message: 'API funcionando correctamente' });
   });
 
   it('should respond to requests without crashing', async () => {
     const res = await request(app).get('/nonexistent');
-    expect(res.statusCode).toBeDefined();
+    expect(res.statusCode).toBe(404);
   });
 });
