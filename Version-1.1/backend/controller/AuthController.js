@@ -26,7 +26,7 @@ async function register(req, res) {
 
     res.cookie('token', token, {
       httpOnly: true,
-      maxAge: 3600000,
+      maxAge: 60 * 60 * 1000,
     });
 
     if (req.headers.accept?.includes('text/html')) {
@@ -37,6 +37,11 @@ async function register(req, res) {
     res.status(201).json({ message: 'Usuario registrado correctamente', token });
   } catch (error) {
     console.error('Error en register:', error);
+    
+    if (error.code === 11000) {
+      return res.status(400).json({ error: 'Ese nombre de usuario ya está registrado' });
+    }
+    
     res.status(500).json({ error: 'Error al registrar usuario' });
   }
 }
