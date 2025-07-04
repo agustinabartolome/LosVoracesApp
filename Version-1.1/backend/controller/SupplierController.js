@@ -96,7 +96,17 @@ module.exports = {
   getSupplierById
 };*/
 
-const Supplier = require ("../model/Supplier");
+const Supplier = require("../model/Supplier");
+
+async function renderSupplierCatalog(req, res) {
+  try {
+    const suppliers = await Supplier.find().lean();
+    res.render('SupplierCatalog', { suppliers });
+  } catch (error) {
+    console.error('Error al renderizar catálogo de proveedores:', error);
+    res.status(500).send('Error al cargar el catálogo de proveedores');
+  }
+}
 
 async function getSuppliers(req, res) {
   try {
@@ -112,7 +122,7 @@ async function getSuppliers(req, res) {
 async function createSupplier(req, res) {
   try {
 
-    const { name, phoneNumber, email, category, catalog } = req.body;
+    const newSupplier = new Supplier ({ name, phoneNumber, email, category, catalog }) = req.body;
 
 
     if (!name || !phoneNumber || !email || !category || !catalog) {
@@ -162,7 +172,7 @@ async function deleteSupplier(req, res) {
     return res.status(404).json({ error: 'Proveedor no encontrado' });
     }
   await supplier.deleteOne();
-res.json({ messaje: 'Proveedor eliminado' });
+res.json({ message: 'Proveedor eliminado' });
 } catch (error) {
     console.error("deleteSupplier error:", error);
     res.status(500).json({ error: "Error interno del servidor" });
@@ -197,7 +207,7 @@ async function getSupplierById(req, res) {
     res.status(500).json({ error: 'Error interno del servidor' });
   }
 }
-
+/*
 async function addToCatalog(req, res) {
   const { id } = req.params; 
   const { item } = req.body; 
@@ -245,7 +255,7 @@ async function removeFromCatalog(req, res) {
   }
 }
 
-
+*/
 module.exports = {
   getSuppliers,
   createSupplier,
@@ -253,6 +263,7 @@ module.exports = {
   deleteSupplier,
   getSuppliersByCategory,
   getSupplierById,
-  addToCatalog,        
-  removeFromCatalog
+  //addToCatalog,        
+  //removeFromCatalog,
+  renderSupplierCatalog
 };
