@@ -67,11 +67,12 @@ describe('Supplier Model Test', () => {
             const validationError = supplier.validateSync();
             
             expect(validationError).toBeDefined();
-            expect(validationError.errors.supplierId).toBeDefined();
-            expect(validationError.errors.name).toBeDefined();
-            expect(validationError.errors.phoneNumber).toBeDefined();
-            expect(validationError.errors.email).toBeDefined();
-            expect(validationError.errors.category).toBeDefined();
+            const fields = ['supplierId', 'name', 'phoneNumber', 'email', 'category'];
+            fields.forEach(field => {
+                expect(validationError.errors[field]).toBeDefined();
+                expect(validationError.errors[field].kind).toBe('required');
+                expect(validationError.errors[field].message).toMatch(new RegExp('Path `' + field + '` is required'));
+            });
         });
 
         test('should validate email format', () => {
@@ -81,6 +82,8 @@ describe('Supplier Model Test', () => {
             
             expect(validationError).toBeDefined();
             expect(validationError.errors.email).toBeDefined();
+            expect(validationError.errors.email.kind).toBe('regexp');
+            expect(validationError.errors.email.message).toMatch(/is invalid/);
         });
 
         test('should accept valid email formats', () => {
@@ -116,6 +119,8 @@ describe('Supplier Model Test', () => {
                 
                 expect(validationError).toBeDefined();
                 expect(validationError.errors.email).toBeDefined();
+                expect(validationError.errors.email.kind).toBe('regexp');
+                expect(validationError.errors.email.message).toMatch(/is invalid/);
             });
         });
     });

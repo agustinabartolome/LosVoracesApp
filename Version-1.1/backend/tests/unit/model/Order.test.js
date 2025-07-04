@@ -85,14 +85,12 @@ describe('Order Model Test', () => {
             const validationError = order.validateSync();
             
             expect(validationError).toBeDefined();
-            expect(validationError.errors.orderId).toBeDefined();
-            expect(validationError.errors.supplierId).toBeDefined();
-            expect(validationError.errors.product).toBeDefined();
-            expect(validationError.errors.date).toBeDefined();
-            expect(validationError.errors.category).toBeDefined();
-            expect(validationError.errors.price).toBeDefined();
-            expect(validationError.errors.quantityProduct).toBeDefined();
-            expect(validationError.errors.total).toBeDefined();
+            const fields = ['orderId', 'supplierId', 'product', 'date', 'category', 'price', 'quantityProduct', 'total'];
+            fields.forEach(field => {
+                expect(validationError.errors[field]).toBeDefined();
+                expect(validationError.errors[field].kind).toBe('required');
+                expect(validationError.errors[field].message).toMatch(new RegExp('Path `' + field + '` is required'));
+            });
         });
 
         test('should validate price is positive', () => {
@@ -102,6 +100,8 @@ describe('Order Model Test', () => {
             
             expect(validationError).toBeDefined();
             expect(validationError.errors.price).toBeDefined();
+            expect(validationError.errors.price.kind).toBe('min');
+            expect(validationError.errors.price.message).toMatch(/minimum allowed value/);
         });
 
         test('should validate quantity is positive', () => {
@@ -111,6 +111,8 @@ describe('Order Model Test', () => {
             
             expect(validationError).toBeDefined();
             expect(validationError.errors.quantityProduct).toBeDefined();
+            expect(validationError.errors.quantityProduct.kind).toBe('min');
+            expect(validationError.errors.quantityProduct.message).toMatch(/minimum allowed value/);
         });
 
         test('should validate total is positive', () => {
@@ -120,6 +122,8 @@ describe('Order Model Test', () => {
             
             expect(validationError).toBeDefined();
             expect(validationError.errors.total).toBeDefined();
+            expect(validationError.errors.total.kind).toBe('min');
+            expect(validationError.errors.total.message).toMatch(/minimum allowed value/);
         });
 
         test('should validate status enum values', () => {
@@ -129,6 +133,8 @@ describe('Order Model Test', () => {
             
             expect(validationError).toBeDefined();
             expect(validationError.errors.status).toBeDefined();
+            expect(validationError.errors.status.kind).toBe('enum');
+            expect(validationError.errors.status.message).toMatch(/`invalid-status` is not a valid enum value/);
         });
 
         test('should accept valid status values', () => {

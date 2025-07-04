@@ -66,14 +66,14 @@ describe('Magazine Model Test', () => {
             const validationError = magazine.validateSync();
             
             expect(validationError).toBeDefined();
-            expect(validationError.errors.magazineId).toBeDefined();
-            expect(validationError.errors.name).toBeDefined();
-            expect(validationError.errors.price).toBeDefined();
-            expect(validationError.errors.issn).toBeDefined();
-            expect(validationError.errors.number).toBeDefined();
-            expect(validationError.errors.section).toBeDefined();
-            expect(validationError.errors.date).toBeDefined();
-            expect(validationError.errors.issueNumber).toBeDefined();
+            expect(validationError.errors.magazineId.kind).toBe('required');
+            expect(validationError.errors.name.kind).toBe('required');
+            expect(validationError.errors.price.kind).toBe('required');
+            expect(validationError.errors.issn.kind).toBe('required');
+            expect(validationError.errors.number.kind).toBe('required');
+            expect(validationError.errors.section.kind).toBe('required');
+            expect(validationError.errors.date.kind).toBe('required');
+            expect(validationError.errors.issueNumber.kind).toBe('required');
         });
 
         test('should validate price is positive', () => {
@@ -82,7 +82,8 @@ describe('Magazine Model Test', () => {
             const validationError = magazine.validateSync();
             
             expect(validationError).toBeDefined();
-            expect(validationError.errors.price).toBeDefined();
+            expect(validationError.errors.price.kind).toBe('min');
+            expect(validationError.errors.price.message).toMatch(/minimum allowed value/);
         });
 
         test('should validate stock is not negative', () => {
@@ -91,7 +92,8 @@ describe('Magazine Model Test', () => {
             const validationError = magazine.validateSync();
             
             expect(validationError).toBeDefined();
-            expect(validationError.errors.stock).toBeDefined();
+            expect(validationError.errors.stock.kind).toBe('min');
+            expect(validationError.errors.stock.message).toMatch(/minimum allowed value/);
         });
 
         test('should validate number is positive', () => {
@@ -100,7 +102,8 @@ describe('Magazine Model Test', () => {
             const validationError = magazine.validateSync();
             
             expect(validationError).toBeDefined();
-            expect(validationError.errors.number).toBeDefined();
+            expect(validationError.errors.number.kind).toBe('min');
+            expect(validationError.errors.number.message).toMatch(/minimum allowed value/);
         });
 
         test('should validate issue number is positive', () => {
@@ -109,7 +112,8 @@ describe('Magazine Model Test', () => {
             const validationError = magazine.validateSync();
             
             expect(validationError).toBeDefined();
-            expect(validationError.errors.issueNumber).toBeDefined();
+            expect(validationError.errors.issueNumber.kind).toBe('min');
+            expect(validationError.errors.issueNumber.message).toMatch(/minimum allowed value/);
         });
 
         test('should pass validation with valid data', () => {

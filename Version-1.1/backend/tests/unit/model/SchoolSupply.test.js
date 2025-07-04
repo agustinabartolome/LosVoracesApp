@@ -84,11 +84,12 @@ describe('SchoolSupply Model Test', () => {
             const validationError = schoolSupply.validateSync();
             
             expect(validationError).toBeDefined();
-            expect(validationError.errors.schoolSupplyId).toBeDefined();
-            expect(validationError.errors.name).toBeDefined();
-            expect(validationError.errors.price).toBeDefined();
-            expect(validationError.errors.section).toBeDefined();
-            expect(validationError.errors.brand).toBeDefined();
+            const fields = ['schoolSupplyId', 'name', 'price', 'section', 'brand'];
+            fields.forEach(field => {
+                expect(validationError.errors[field]).toBeDefined();
+                expect(validationError.errors[field].kind).toBe('required');
+                expect(validationError.errors[field].message).toMatch(new RegExp('Path `' + field + '` is required'));
+            });
         });
 
         test('should validate price is positive', () => {
@@ -98,6 +99,8 @@ describe('SchoolSupply Model Test', () => {
             
             expect(validationError).toBeDefined();
             expect(validationError.errors.price).toBeDefined();
+            expect(validationError.errors.price.kind).toBe('min');
+            expect(validationError.errors.price.message).toMatch(/minimum allowed value/);
         });
 
         test('should accept zero price', () => {
